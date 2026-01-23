@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>TerryPick! - Login</title>
+        <title>TerryPick! - Sign Up</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -12,16 +12,19 @@
         <div class="container">
             <div class="login-form">
                 <h1>Welcome to TerryPick!</h1>
-                <form action="/login" method="post">
+                <form action="/signup" method="post">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" required>
 
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
 
-                    <button type="submit">Login</button>
+                    <label for="retype_password">Retype Password</label>
+                    <input type="password" id="retype_password" name="retype_password" required>
+
+                    <button type="submit">Sign Up</button>
                 </form>
-                <p>Don't have an account? <a href="Signup Page.html">Sign Up</a></p>
+                <p>Already have an account? <a href="Login Page.html">Login</a></p>
             </div>
         </div>
     </body>

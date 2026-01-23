@@ -1,29 +1,85 @@
+body {
+    margin: 0;
+}
 
+.montserrat-h1 {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+}
 
-.roboto-body {
-    font-family: "Roboto", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: <weight>;
-    font-style: normal;
-    font-variation-settings:
-      "wdth" 100;
-  }
+.montserrat-p {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
 
-  .open-sans-nav {
-    font-family: "Open Sans", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: <weight>;
-    font-style: normal;
-    font-variation-settings:
-      "wdth" 100;
-  }
-
-  ul {
+ul {
     display: flex;
     margin: 50px;
     gap: 20px;
-  }
+}
 
-  li {
+li {
     border-radius: 50px;
-  }
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin-top: 0;
+}
+
+.login-form {
+    width: 360px;
+    margin: 0 auto;
+    padding: 40px 40px 50px;
+    border-radius: 20px;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    font-family: "Montserrat", sans-serif;
+    text-align: left;
+}
+
+.login-form h1 {
+    margin: 0 0 30px;
+    font-size: 26px;
+}
+
+.login-form form {
+    margin-top: 10px;
+}
+
+.login-form label {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 4px;
+    color: #777;
+}
+
+input[type="text"], input[type="password"] {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 2.5px;
+    margin: 0 0 20px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+    font-size: 14px;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #4facfe, #9b5cff);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
