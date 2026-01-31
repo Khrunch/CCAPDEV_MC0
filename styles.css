@@ -1,5 +1,12 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
+    overflow-x: hidden;
 }
 
 .montserrat-h1 {
@@ -34,8 +41,60 @@ li {
     margin-top: 0;
 }
 
+.top-nav {
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    padding: 10px clamp(24px, 6vw, 96px);
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 180ms ease;
+    will-change: transform;
+}
+
+.top-nav.top-nav--hidden {
+    transform: translateY(-110%);
+}
+
+.top-nav-left,
+.top-nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.top-nav-right {
+    gap: 16px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.brand-text {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+}
+
+.logo {
+    height: 40px;
+    vertical-align: middle;
+    margin: 0;
+}
+
 .login-form {
-    width: 360px;
+    width: 442px;
     margin: 0 auto;
     padding: 40px 40px 50px;
     border-radius: 20px;
@@ -82,4 +141,125 @@ input[type="text"], input[type="password"] {
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
+}
+
+.top-nav a {
+    color: #111;
+    text-decoration: none;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+}
+
+.top-nav a:hover {
+    text-decoration: underline;
+}
+
+/* push page content below the fixed navbar */
+.page {
+    padding-top: 90px;
+    padding-left: clamp(24px, 6vw, 96px);
+    padding-right: clamp(24px, 6vw, 96px);
+}
+
+.home-hero {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 0 10px;
+}
+
+.home-title {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 900;
+    font-size: 44px;
+    margin: 0 0 12px;
+}
+
+.home-subtitle {
+    font-family: "Montserrat", sans-serif;
+    color: #555;
+    margin: 0 0 22px;
+    line-height: 1.5;
+}
+
+.home-cta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-block;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+}
+
+.btn-primary {
+    color: #fff;
+    background: linear-gradient(90deg, #4facfe, #9b5cff);
+}
+
+.btn-ghost {
+    color: #111;
+    background: #fff;
+    border-color: #ddd;
+}
+
+.home-section {
+    max-width: 1100px;
+    margin: 26px auto 60px;
+}
+
+.home-section-title {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    margin: 0 0 14px;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.card {
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+    background: #fff;
+}
+
+.card-title {
+    font-family: "Montserrat", sans-serif;
+    margin: 0 0 6px;
+}
+
+.card-text {
+    margin: 0 0 10px;
+    color: #666;
+}
+
+.card-link {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    color: #4f75ff;
+    text-decoration: none;
+}
+
+.card-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .home-title {
+        font-size: 34px;
+    }
 }
