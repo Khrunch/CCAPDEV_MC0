@@ -1,3 +1,4 @@
+/*Global Styles*/
 *,
 *::before,
 *::after {
@@ -53,6 +54,7 @@ li {
     left: 0;
     z-index: 1000;
 
+    
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -161,32 +163,6 @@ input[type="text"], input[type="password"] {
     padding-right: clamp(24px, 6vw, 96px);
 }
 
-.home-hero {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 40px 0 10px;
-}
-
-.home-title {
-    font-family: "Montserrat", sans-serif;
-    font-weight: 900;
-    font-size: 44px;
-    margin: 0 0 12px;
-}
-
-.home-subtitle {
-    font-family: "Montserrat", sans-serif;
-    color: #555;
-    margin: 0 0 22px;
-    line-height: 1.5;
-}
-
-.home-cta {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
 .btn {
     display: inline-block;
     font-family: "Montserrat", sans-serif;
@@ -262,4 +238,47 @@ input[type="text"], input[type="password"] {
     .home-title {
         font-size: 34px;
     }
+}
+
+/*Home Page Styles*/
+.home-hero {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 0 10px;
+}
+
+.home-title {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 900;
+    font-size: 44px;
+    margin: 0 0 12px;
+}
+
+.home-subtitle {
+    font-family: "Montserrat", sans-serif;
+    color: #555;
+    margin: 0 0 22px;
+    line-height: 1.5;
+}
+
+.home-cta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.nav-bar{
+    display: flex;
+    gap: 30px;
+    font-size: 15px;
+    
+    margin-left: auto;
+}
+
+.header{
+    font-family: "Montserrat", sans-serif;
+    padding: 12px;
+    margin: 12px;
+    display: flex;
+
 }
