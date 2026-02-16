@@ -133,6 +133,39 @@ input[type="text"], input[type="password"] {
     font-size: 14px;
 }
 
+input[type="text"], input[type="court_name"] {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 2.5px;  
+    margin: 0 0 20px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+    font-size: 14px;
+}
+
+input[type="text"], input[type="address"] {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 2.5px;  
+    margin: 0 0 20px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+    font-size: 14px;
+}
+
+input[type="text"], input[type="mobile_no"] {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 2.5px;
+    margin: 0 0 20px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+    font-size: 14px;
+}
+
 .login-form button {
     width: 100%;
     padding: 12px 0;
