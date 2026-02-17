@@ -22,6 +22,10 @@
                 <a href="About Us.html">About Us</a>
                 <a id="nav-login" href="Login Page.html">Login</a>
                 <a id="nav-profile" class="btn btn-ghost" href="Profile Page.html" style="display:none;">Profile</a>
+
+                <!-- NEW: owner dashboard link -->
+                <a id="nav-owner" class="btn btn-ghost" href="Owner Dashboard.html" style="display:none;">Owner Dashboard</a>
+
                 <a id="nav-primary" class="btn btn-primary" href="Signup Page.html">Sign Up</a>
             </div>
         </div>
@@ -36,7 +40,7 @@
                 <div class="home-cta">
                     <a id="cta-signup" class="btn btn-primary" href="Signup Page.html">Get Started</a>
                     <a id="cta-login" class="btn btn-ghost" href="Login Page.html">I already have an account</a>
-                    <a id="cta-login" class="btn btn-ghost" href="Sign Up Page Owner.html">Register your court here</a>
+                    <a id="cta-owner" class="btn btn-ghost" href="Sign Up Page Owner.html">Register your court here</a>
 
                     <!-- shown only when logged in -->
                     <a id="cta-profile" class="btn btn-primary" href="Profile Page.html" style="display:none;">Go to Profile</a>
@@ -50,7 +54,7 @@
                     <article class="card">
                         <h3 class="card-title">Top Picks</h3>
                         <p class="card-text">See what's trending this week.</p>
-                        <a class="card-link" href="#">Explore</a>
+                        <a class="card-link" href="Court Profile Page.html">Explore</a>
                     </article>
 
                     <article class="card">
@@ -63,6 +67,48 @@
                         <h3 class="card-title">Saved</h3>
                         <p class="card-text">Keep your favorites in one place.</p>
                         <a class="card-link" href="#">View saved</a>
+                    </article>
+                </div>
+            </section>
+
+            <section id="featured-courts" class="home-section">
+                <h2 class="home-section-title">Featured courts (sample)</h2>
+
+                <div class="card-grid">
+                    <article class="card">
+                        <h3 class="card-title">Greenhills Court 2</h3>
+                        <p class="card-text">Outdoor · Hardcourt · 2 courts</p>
+                        <a class="card-link" href="Court Profile Page.html?court=greenhills2">View court</a>
+                    </article>
+
+                    <article class="card">
+                        <h3 class="card-title">BGC Rooftop Pickle</h3>
+                        <p class="card-text">Outdoor · Acrylic · 1 court</p>
+                        <a class="card-link" href="Court Profile Page.html?court=bgc_rooftop">View court</a>
+                    </article>
+
+                    <article class="card">
+                        <h3 class="card-title">Makati Central Gym</h3>
+                        <p class="card-text">Indoor · Wooden · 3 courts</p>
+                        <a class="card-link" href="Court Profile Page.html?court=makati_gym">View court</a>
+                    </article>
+
+                    <article class="card">
+                        <h3 class="card-title">Quezon City Community Courts</h3>
+                        <p class="card-text">Outdoor · Concrete · 4 courts</p>
+                        <a class="card-link" href="Court Profile Page.html?court=qc_community">View court</a>
+                    </article>
+
+                    <article class="card">
+                        <h3 class="card-title">Alabang Sports Hub</h3>
+                        <p class="card-text">Indoor · Rubberized · 2 courts</p>
+                        <a class="card-link" href="Court Profile Page.html?court=alabang_hub">View court</a>
+                    </article>
+
+                    <article class="card">
+                        <h3 class="card-title">Pasig Riverside Courts</h3>
+                        <p class="card-text">Outdoor · Hardcourt · 2 courts</p>
+                        <a class="card-link" href="Court Profile Page.html?court=pasig_riverside">View court</a>
                     </article>
                 </div>
             </section>
@@ -112,6 +158,24 @@
                         <h3 class="card-title">Item #6</h3>
                         <p class="card-text">Cupidatat non proident, sunt in culpa qui officia deserunt.</p>
                         <a class="card-link" href="#">Details</a>
+                    </article>
+                </div>
+            </section>
+
+            <section id="owner-home" class="home-section" style="display:none;">
+                <h2 class="home-section-title">Your court (Owner)</h2>
+
+                <div class="card-grid">
+                    <article class="card">
+                        <h3 class="card-title">Manage your court</h3>
+                        <p class="card-text">View your court profile and handle reservation requests.</p>
+                        <a class="card-link" href="Owner Dashboard.html">Open dashboard</a>
+                    </article>
+
+                    <article class="card">
+                        <h3 class="card-title">View your court page</h3>
+                        <p class="card-text">This is what players see.</p>
+                        <a id="owner-court-link" class="card-link" href="Court Profile Page.html?court=greenhills2">View court</a>
                     </article>
                 </div>
             </section>

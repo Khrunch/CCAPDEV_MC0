@@ -2,29 +2,58 @@
     // auth for demo purposes only (not secure, do not use in production)
     const AUTH_KEY = "tp_logged_in";
 
+    // NEW: role + owner court
+    const ROLE_KEY = "tp_role"; // "player" | "owner"
+    const OWNER_COURT_KEY = "tp_owner_court"; // e.g. "greenhills2"
+
     // sample login
-    const SAMPLE_USER = { username: "terryp", password: "pickle123" };
+    const SAMPLE_USER = { username: "terryp", password: "pickle123", role: "player" };
+
+    // sample court owner account
+    const SAMPLE_OWNER = { username: "owner1", password: "pickle123", role: "owner", courtKey: "greenhills2" };
 
     const isLoggedIn = () => localStorage.getItem(AUTH_KEY) === "1";
+
+    const getRole = () => localStorage.getItem(ROLE_KEY) || "";
+    const setRole = (role) => {
+        if (!role) localStorage.removeItem(ROLE_KEY);
+        else localStorage.setItem(ROLE_KEY, role);
+    };
+
+    const getOwnerCourt = () => localStorage.getItem(OWNER_COURT_KEY) || "";
+    const setOwnerCourt = (courtKey) => {
+        if (!courtKey) localStorage.removeItem(OWNER_COURT_KEY);
+        else localStorage.setItem(OWNER_COURT_KEY, courtKey);
+    };
+
     const setLoggedIn = (value) => {
         if (value) localStorage.setItem(AUTH_KEY, "1");
-        else localStorage.removeItem(AUTH_KEY);
+        else {
+            localStorage.removeItem(AUTH_KEY);
+            localStorage.removeItem(ROLE_KEY);
+            localStorage.removeItem(OWNER_COURT_KEY);
+        }
     };
 
     function updateAuthNav() {
         const loginLink = document.getElementById("nav-login");
         const profileLink = document.getElementById("nav-profile");
+        const ownerLink = document.getElementById("nav-owner");
         const primaryBtn = document.getElementById("nav-primary");
 
         // home page CTA (optional)
         const ctaSignup = document.getElementById("cta-signup");
         const ctaLogin = document.getElementById("cta-login");
+        const ctaOwner = document.getElementById("cta-owner"); // NEW
         const ctaProfile = document.getElementById("cta-profile");
 
         const loggedIn = isLoggedIn();
+        const role = getRole();
 
         if (loginLink) loginLink.style.display = loggedIn ? "none" : "";
-        if (profileLink) profileLink.style.display = loggedIn ? "" : "none";
+
+        if (profileLink) profileLink.style.display = loggedIn && role !== "owner" ? "" : "none";
+        if (ownerLink) ownerLink.style.display = loggedIn && role === "owner" ? "" : "none";
 
         if (primaryBtn) {
             if (loggedIn) {
@@ -40,35 +69,115 @@
 
         if (ctaSignup) ctaSignup.style.display = loggedIn ? "none" : "";
         if (ctaLogin) ctaLogin.style.display = loggedIn ? "none" : "";
-        if (ctaProfile) ctaProfile.style.display = loggedIn ? "" : "none";
+
+        // hide owner registration CTA once logged in (fix for owner accounts)
+        if (ctaOwner) ctaOwner.style.display = loggedIn ? "none" : "";
+
+        if (ctaProfile) ctaProfile.style.display = loggedIn && role !== "owner" ? "" : "none";
+
+        updateHomeForRole();
+        updateCourtProfileForRole();
+    }
+
+    function updateHomeForRole() {
+        const featured = document.getElementById("featured-courts");
+        const ownerHome = document.getElementById("owner-home");
+        const ownerCourtLink = document.getElementById("owner-court-link");
+
+        const loggedIn = isLoggedIn();
+        const role = getRole();
+
+        if (!featured && !ownerHome) return;
+
+        if (loggedIn && role === "owner") {
+            if (featured) featured.style.display = "none";
+            if (ownerHome) ownerHome.style.display = "";
+            if (ownerCourtLink) {
+                const courtKey = getOwnerCourt() || SAMPLE_OWNER.courtKey;
+                ownerCourtLink.href = `Court Profile Page.html?court=${encodeURIComponent(courtKey)}`;
+            }
+        } else {
+            if (featured) featured.style.display = "";
+            if (ownerHome) ownerHome.style.display = "none";
+        }
+    }
+
+    function updateCourtProfileForRole() {
+        // only runs meaningfully on Court Profile page (elements may not exist elsewhere)
+        const manageBtn = document.getElementById("btn-manage");
+        if (!manageBtn) return;
+
+        const loggedIn = isLoggedIn();
+        const role = getRole();
+        const ownerCourt = getOwnerCourt();
+
+        const params = new URLSearchParams(window.location.search);
+        const currentCourt = params.get("court") || "greenhills2";
+
+        const isOwnerViewingOwnCourt =
+            loggedIn && role === "owner" && ownerCourt && ownerCourt === currentCourt;
+
+        manageBtn.style.display = isOwnerViewingOwnCourt ? "" : "none";
+        if (isOwnerViewingOwnCourt) {
+            manageBtn.href = `Owner Dashboard.html?court=${encodeURIComponent(currentCourt)}`;
+        }
+    }
+
+    async function postForm(url, formEl) {
+        const formData = new FormData(formEl);
+        const body = new URLSearchParams();
+        for (const [k, v] of formData.entries()) body.set(k, String(v));
+
+        const res = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+            body: body.toString(),
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) {
+            const msg = data?.error || `Request failed (${res.status})`;
+            throw new Error(msg);
+        }
+        return data;
     }
 
     function wireAuthForms() {
         const loginForm = document.querySelector('form[action="/login"]');
         if (loginForm) {
-            loginForm.addEventListener("submit", (e) => {
+            loginForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
+                try {
+                    const data = await postForm("/login", loginForm);
 
-                const username = loginForm.querySelector('input[name="username"]')?.value?.trim() ?? "";
-                const password = loginForm.querySelector('input[name="password"]')?.value ?? "";
-
-                if (username === SAMPLE_USER.username && password === SAMPLE_USER.password) {
                     setLoggedIn(true);
+                    setRole(data.role || "");
+                    setOwnerCourt(data.ownerCourt || "");
+
                     updateAuthNav();
-                    window.location.href = "Profile Page.html";
-                } else {
-                    alert(`Invalid demo credentials.\nTry: ${SAMPLE_USER.username} / ${SAMPLE_USER.password}`);
+                    window.location.href = data.role === "owner" ? "Owner Dashboard.html" : "Profile Page.html";
+                } catch (err) {
+                    alert(err?.message || "Login failed.");
                 }
             });
         }
 
         const signupForm = document.querySelector('form[action="/signup"]');
         if (signupForm) {
-            signupForm.addEventListener("submit", (e) => {
+            signupForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
-                setLoggedIn(true);
-                updateAuthNav();
-                window.location.href = "Profile Page.html";
+                try {
+                    const data = await postForm("/signup", signupForm);
+
+                    setLoggedIn(true);
+                    setRole(data.role || "");
+                    setOwnerCourt(data.ownerCourt || "");
+
+                    updateAuthNav();
+                    window.location.href = data.role === "owner" ? "Owner Dashboard.html" : "Profile Page.html";
+                } catch (err) {
+                    alert(err?.message || "Signup failed.");
+                }
             });
         }
     }
