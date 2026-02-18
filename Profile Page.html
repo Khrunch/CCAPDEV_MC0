@@ -18,7 +18,13 @@
                 </a>
             </div>
 
-            <div class="top-nav-right">
+            <!-- NEW -->
+            <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="top-nav-menu">
+                &#8942;
+            </button>
+
+            <!-- CHANGED: add id -->
+            <div class="top-nav-right" id="top-nav-menu">
                 <a href="About Us.html">About Us</a>
                 <a class="btn btn-ghost" href="Home Page.html">Home</a>
             </div>
@@ -26,11 +32,11 @@
 
         <main class="page">
             <section class="profile-hero">
-                <div class="profile-avatar" aria-hidden="true">TP</div>
+                <div id="profile-avatar" class="profile-avatar" aria-hidden="true">TP</div>
 
                 <div class="profile-hero-text">
-                    <h1 class="profile-name">Terry Parker</h1>
-                    <p class="profile-meta">Username: <strong>terryp</strong> · Member since <strong>2026</strong></p>
+                    <h1 id="profile-name" class="profile-name">Profile</h1>
+                    <p class="profile-meta">Username: <strong id="profile-username">—</strong> · Member since <strong>2026</strong></p>
 
                     <div class="profile-actions">
                         <a class="btn btn-primary" href="Edit User Profile Page.html">Edit profile</a>

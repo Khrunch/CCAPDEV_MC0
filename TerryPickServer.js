@@ -71,18 +71,54 @@ const usersByUsername = new Map();
 
 const reservations = {};
 
-// seed demo accounts (matching your original demo creds)
+// seed demo accounts
 usersByUsername.set("terryp", {
   username: "terryp",
   password: "pickle123",
   role: "player",
   courtKey: "",
 });
+
 usersByUsername.set("owner1", {
   username: "owner1",
   password: "pickle123",
   role: "owner",
   courtKey: "greenhills2",
+});
+
+usersByUsername.set("alexr", {
+  username: "alexr",
+  password: "pickle123",
+  role: "player",
+  courtKey: "",
+});
+
+usersByUsername.set("guest123", {
+  username: "guest123",
+  password: "pickle123",
+  role: "player",
+  courtKey: "",
+});
+
+usersByUsername.set("sammyg", {
+  username: "sammyg",
+  password: "pickle123",
+  role: "player",
+  courtKey: "",
+});
+
+usersByUsername.set("owner2", {
+  username: "owner2",
+  password: "pickle123",
+  role: "owner",
+  courtKey: "bgc_rooftop",
+});
+
+usersByUsername.set("owner3", {
+  username: "owner3",
+  password: "pickle123",
+  role: "owner",
+  courtKey: "makati_gym",
 });
 
 function safeResolveFromPublic(requestPath) {

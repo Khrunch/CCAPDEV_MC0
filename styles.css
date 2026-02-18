@@ -496,3 +496,283 @@ button[type="submit"] {
         transform: none;
     }
 }
+
+.reservation-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    max-width: 1100px;
+    margin: 0 auto 14px;
+}
+
+.reservation-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.reservation-week-label {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    color: #111;
+    min-width: 260px;
+    text-align: center;
+}
+
+.week-calendar {
+    max-width: 1100px;
+    margin: 0 auto;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+}
+
+.week-calendar__grid {
+    display: grid;
+    /* 1st column = times, next 7 = days */
+    grid-template-columns: 140px repeat(7, minmax(120px, 1fr));
+}
+
+.week-calendar__cell {
+    border-right: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 10px 12px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 13px;
+}
+
+.week-calendar__cell--header {
+    white-space: normal;
+    line-height: 1.1;
+    text-align: center;
+}
+
+.week-calendar__dow {
+    font-weight: 800;
+}
+
+.week-calendar__date {
+    margin-top: 2px;
+    font-weight: 700;
+    font-size: 11px;
+    color: #555;
+}
+
+.week-calendar__cell--time {
+    background: #fafafa;
+    font-weight: 700;
+    color: #444;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.week-calendar__slot {
+    width: 100%;
+    height: 44px;
+    border-radius: 10px;
+    border: 1px solid #e6e6e6;
+    background: #fff;
+    cursor: pointer;
+    transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease, border-color 120ms ease;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    color: #111;
+}
+
+.week-calendar__slot:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+}
+
+.week-calendar__slot.is-selected {
+    background: rgba(79, 172, 254, 0.18);
+    border-color: rgba(79, 172, 254, 0.65);
+}
+
+.week-calendar__slot:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.reservation-footer {
+    max-width: 1100px;
+    margin: 14px auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.reservation-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.selected-list {
+    max-width: 1100px;
+    margin: 14px auto 0;
+    font-family: "Montserrat", sans-serif;
+    color: #444;
+    font-size: 13px;
+}
+
+.week-calendar__cell--slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 8px;
+}
+
+.week-calendar__checkbox {
+    display: block;
+    margin: 0;
+    width: 16px;
+    height: 16px;
+    accent-color: #4facfe;
+}
+
+/* Allow horizontal scroll on small screens */
+.week-calendar {
+    /* was: overflow: hidden; */
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch; /* smoother on mobile */
+    overscroll-behavior-x: contain;
+}
+
+/* Make the grid keep its natural width so it scrolls instead of squishing */
+.week-calendar__grid {
+    width: max-content;
+    min-width: 100%;
+}
+
+/* Optional: slightly tighter columns on mobile */
+@media (max-width: 700px) {
+    .week-calendar__grid {
+        grid-template-columns: 88px repeat(7, 110px);
+    }
+}
+
+/* Ensure dropdown positions relative to navbar */
+.top-nav {
+    position: fixed; /* you already have this */
+    /* NEW: */
+    position: fixed;
+    left: 0;
+    right: 0;
+}
+
+.nav-toggle {
+    display: none; /* desktop hidden */
+    border: 0;
+    background: #ffffff;
+    border: 1px solid #e7e7e7;
+    border-radius: 999px; /* pill */
+    padding: 10px 14px;
+    cursor: pointer;
+
+    /* NEW: make it a dots button */
+    font-family: "Montserrat", sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1;
+    width: 44px;
+    height: 40px;
+    display: none; /* keep default hidden on desktop */
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.06);
+}
+
+/* If you keep the old <span class="nav-toggle__bar"> in some pages, this is harmless */
+.nav-toggle__bar {
+    display: none; /* NEW: ensure bars never show */
+}
+
+/* Mobile: hide right links behind hamburger; show as dropdown when open */
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: inline-flex;
+    }
+
+    .top-nav {
+        position: fixed;
+    }
+
+    .top-nav-right {
+        /* keep it in the DOM so we can animate */
+        display: flex;
+
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 12px;
+        left: 12px;
+
+        flex-direction: column;
+        gap: 10px;
+
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 16px;
+        padding: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        z-index: 9999;
+
+        /* hidden state */
+        opacity: 0;
+        transform: translateY(-8px);
+        visibility: hidden;
+        pointer-events: none;
+
+        /* height animation */
+        max-height: 0;
+        overflow: hidden;
+
+        transition:
+            opacity 180ms ease,
+            transform 180ms ease,
+            max-height 220ms ease,
+            visibility 0s linear 220ms; /* wait to hide visibility until after closing */
+    }
+
+    .top-nav.top-nav--menu-open .top-nav-right {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+        pointer-events: auto;
+
+        max-height: 70vh;
+
+        transition:
+            opacity 180ms ease,
+            transform 180ms ease,
+            max-height 260ms ease,
+            visibility 0s; /* show immediately */
+    }
+
+    /* Make links easier to tap */
+    .top-nav-right a,
+    .top-nav-right .btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    @media (max-width: 768px) {
+        .top-nav-right {
+            transition: none;
+            transform: none;
+        }
+    }
+}
