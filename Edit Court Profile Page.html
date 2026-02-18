@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TerryPick! - Edit Court Profile</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/16117/16117721.png">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
+    <body>
+        <div class="top-nav">
+            <div class="top-nav-left">
+                <a href="Home Page.html" class="brand">
+                    <img src="https://cdn-icons-png.flaticon.com/512/16117/16117721.png" alt="TerryPick Logo" class="logo">
+                    <span class="brand-text">TerryPick</span>                    
+                </a>
+            </div>
+
+            <div class="top-nav-right">
+                <a href="About Us.html">About Us</a>
+                <a class="btn btn-ghost" href="Home Page.html">Home</a>
+            </div>
+        </div>
+
+        <main class="page">
+            <section class="profile-hero">
+                <div class="profile-avatar" aria-hidden="true">CP</div>
+                <div class="profile-hero-text">
+                    <h1 class="profile-name">Greenhills Court</h1>
+                    <p class="profile-meta">Location: <strong>Makati City</strong> · Member since <strong>2024</strong></p>
+                </div>
+            </section>
+
+            <section class="profile-hero">
+                <div class="profile-hero-text">
+                    <h1 class="profile-name">Edit Court Profile</h1>
+                    <form action="/edit-court-profile" method="post">
+                        <label for="court-name">Court Name</label>
+                        <input type="text" id="court-name" name="court-name" required>
+
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location" required>
+
+                        <label for="description">Description</label>
+                        <input type="text" id="description" name="description" required>
+
+                        <label for="amenities">Amenities</label>
+                        <input type="text" id="amenities" name="amenities" required>
+
+                        <label for="rates">Rates</label>
+                        <input type="text" id="rates" name="rates" required>
+
+                        <label for="rules">Rules</label>
+                        <input type="text" id="rules" name="rules" required>
+
+                        <button type="submit">Save Changes</button>
+                    </form>
+                    <p>Don't have a court? <a href="Sign Up Page Owner.html">Sign Up as Owner</a></p>
+                </div>
+            </section>
+
+        </main>
+
+        <script defer src="scripts.js"></script>
+    </body>
+</html>

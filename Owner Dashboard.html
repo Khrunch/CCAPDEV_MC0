@@ -35,7 +35,7 @@
 
                     <div class="profile-actions">
                         <a id="owner-view-court" class="btn btn-ghost" href="Court Profile Page.html?court=greenhills2">View public court page</a>
-                        <a class="btn btn-primary" href="#" id="btn-edit-court">Edit court profile</a>
+                        <a class="btn btn-primary" href="Edit Court Profile Page.html" id="btn-edit-court">Edit court profile</a>
                     </div>
                 </div>
             </section>
@@ -94,12 +94,12 @@
 
             const viewCourt = document.getElementById("owner-view-court");
             if (viewCourt) viewCourt.href = `Court Profile Page.html?court=${encodeURIComponent(court)}`;
-
+/*
             document.getElementById("btn-edit-court")?.addEventListener("click", (e) => {
                 e.preventDefault();
                 alert("Sample edit flow: (not implemented yet).");
             });
-
+*/
             document.addEventListener("click", (e) => {
                 const a = e.target.closest("a[data-action]");
                 if (!a) return;

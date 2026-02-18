@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TerryPick! - Profile</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/16117/16117721.png">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
+    <body>
+        <div class="top-nav">
+            <div class="top-nav-left">
+                <a href="Home Page.html" class="brand">
+                    <img src="https://cdn-icons-png.flaticon.com/512/16117/16117721.png" alt="TerryPick Logo" class="logo">
+                    <span class="brand-text">TerryPick</span>                    
+                </a>
+            </div>
+
+            <div class="top-nav-right">
+                <a href="About Us.html">About Us</a>
+                <a class="btn btn-ghost" href="Home Page.html">Home</a>
+            </div>
+        </div>
+
+        <main class="page">
+            <section class="profile-hero">
+                <div class="profile-avatar" aria-hidden="true">TP</div>
+                <div class="profile-hero-text">
+                    <h1 class="profile-name">Terry Parker</h1>
+                    <p class="profile-meta">Username: <strong>terryp</strong> · Member since <strong>2026</strong></p>
+                </div>
+            </section>
+
+            <section class="profile-hero">
+                <div class="profile-hero-text">
+                    <h1 class="profile-name">Edit Profile</h1>
+                    <form action="/edit-profile" method="post">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required>
+
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+
+                        <button type="submit">Save Changes</button>
+                    </form>
+                    <p>Don't have an account? <a href="Signup Page.html">Sign Up</a></p>
+                </div>
+            </section>
+
+        </main>
+
+        <script defer src="scripts.js"></script>
+    </body>
+</html>
