@@ -166,6 +166,17 @@ input[type="text"], input[type="mobile_no"] {
     font-size: 14px;
 }
 
+button[type="submit"] {
+    padding: 10px 14px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #4facfe, #9b5cff);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
 .login-form button {
     width: 100%;
     padding: 12px 0;
