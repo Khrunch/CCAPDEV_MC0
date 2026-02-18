@@ -69,6 +69,8 @@ function slugifyCourtKey(name) {
  */
 const usersByUsername = new Map();
 
+const reservations = {};
+
 // seed demo accounts (matching your original demo creds)
 usersByUsername.set("terryp", {
   username: "terryp",
@@ -186,6 +188,46 @@ const server = http.createServer(async (req, res) => {
     if (req.method === "GET" && route === "/login") {
       res.writeHead(302, { Location: "/Login Page.html" });
       return res.end();
+    }
+
+    // =========================
+    // Reservation API (DEMO ONLY)
+    // =========================
+    if (req.method === "GET" && route === "/availability") {
+      const court = url.searchParams.get("court");
+      const date = url.searchParams.get("date");
+
+      if (!court || !date) {
+        return sendJson(res, 400, { ok: false, error: "court and date are required" });
+      }
+
+      const booked =
+        reservations[court]?.[date]
+          ? Array.from(reservations[court][date])
+          : [];
+
+      return sendJson(res, 200, { ok: true, booked });
+    }
+
+    if (req.method === "POST" && route === "/reserve") {
+      const raw = await readBody(req);
+      const data = JSON.parse(raw || "{}");
+
+      const { court, date, time, username } = data;
+
+      if (!court || !date || !time || !username) {
+        return sendJson(res, 400, { ok: false, error: "Missing fields" });
+      }
+
+      reservations[court] ??= {};
+      reservations[court][date] ??= new Set();
+
+      if (reservations[court][date].has(time)) {
+        return sendJson(res, 409, { ok: false, error: "Slot already booked" });
+      }
+
+      reservations[court][date].add(time);
+      return sendJson(res, 201, { ok: true });
     }
 
     // =========================

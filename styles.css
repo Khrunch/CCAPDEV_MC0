@@ -403,3 +403,67 @@ input[type="text"], input[type="mobile_no"] {
         grid-template-columns: 1fr;
     }
 }
+
+/* Court Reservation Page */
+.page .page-section.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.page {
+  min-height: calc(100vh - 72px);
+}
+
+.page-title {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+  margin: 0 0 6px;
+}
+
+.section-title {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+.muted {
+  color: #666;
+  margin: 0 0 12px;
+}
+
+.form-row {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-row label {
+  font-size: 12px;
+  color: #777;
+  font-weight: 600;
+}
+
+.form-row input[type="date"] {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-family: "Montserrat", sans-serif;
+}
+
+.slots-wrap {
+  width: 100%;
+  max-width: 360px;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}

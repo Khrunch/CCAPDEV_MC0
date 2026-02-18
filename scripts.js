@@ -236,4 +236,75 @@
         },
         { passive: true }
     );
+
+    async function initReservationPage() {
+    const dateInput = document.getElementById("res-date");
+    const slotsEl = document.getElementById("time-slots");
+    const reserveBtn = document.getElementById("reserve-btn");
+
+    if (!dateInput || !slotsEl || !reserveBtn) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const court = params.get("court") || "greenhills2";
+
+    const TIMES = ["5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM"];
+
+    let selectedTime = null;
+
+    async function loadAvailability() {
+        const date = dateInput.value;
+        if (!date) return;
+
+        const res = await fetch(`/availability?court=${court}&date=${date}`);
+        const data = await res.json();
+
+        slotsEl.innerHTML = "";
+        selectedTime = null;
+        reserveBtn.disabled = true;
+
+        TIMES.forEach((t) => {
+        const div = document.createElement("div");
+        div.className = "time-slot";
+        div.textContent = t;
+
+        if (data.booked.includes(t)) {
+            div.classList.add("booked");
+        } else {
+            div.onclick = () => {
+            document.querySelectorAll(".time-slot").forEach((el) => el.classList.remove("selected"));
+            div.classList.add("selected");
+            selectedTime = t;
+            reserveBtn.disabled = false;
+            };
+        }
+
+        slotsEl.appendChild(div);
+        });
+    }
+
+    dateInput.addEventListener("change", loadAvailability);
+
+    reserveBtn.onclick = async () => {
+        const date = dateInput.value;
+        const username = localStorage.getItem("tp_username") || "terryp";
+
+        const res = await fetch("/reserve", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ court, date, time: selectedTime, username }),
+        });
+
+        const data = await res.json();
+        if (!data.ok) {
+        alert(data.error || "Reservation failed");
+        return;
+        }
+
+        alert("Reserved successfully!");
+        loadAvailability();
+    };
+    }
+
+    initReservationPage();
+
 })();

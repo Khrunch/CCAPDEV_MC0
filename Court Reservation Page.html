@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TerryPick! - Court Reservation Page</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/16117/16117721.png">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
+    
+    <body>
+        <div class="top-nav">
+            <div class="top-nav-left">
+                <a href="Home Page.html" class="brand">
+                    <img src="https://cdn-icons-png.flaticon.com/512/16117/16117721.png" alt="TerryPick Logo" class="logo">
+                    <span class="brand-text">TerryPick</span>                    
+                </a>
+            </div>
+
+            <div class="top-nav-right">
+                <a href="About Us.html">About Us</a>
+                <a class="btn btn-ghost" href="Home Page.html">Home</a>
+            </div>
+        </div>
+
+        <main class="page">
+            <section class="card page-section">
+                <h1 class="page-title">Reserve a Court</h1>
+                <p class="muted">Pick a date and choose an available time slot.</p>
+
+                <div class="form-row">
+                    <label for="res-date">Select date</label>
+                    <input type="date" id="res-date" />
+                </div>
+
+                <div class="slots-wrap">
+                    <h3 class="section-title">Available time slots</h3>
+                    <div id="time-slots" class="time-slots"></div>
+                </div>
+
+                <div class="actions">
+                    <button id="reserve-btn" class="btn btn-primary" disabled>Reserve slot</button>
+                    <a href="Court Profile Page.html" class="btn btn-ghost">Back to court</a>
+                </div>
+            </section>
+        </main>
+
+        <script src="scripts.js"></script>
+
+    </body>
+</html>
