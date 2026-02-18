@@ -2,9 +2,6 @@
     // auth for demo purposes only (not secure, do not use in production)
     const AUTH_KEY = "tp_logged_in";
 
-    // NEW: store username for reservation API payload
-    const USERNAME_KEY = "tp_username";
-
     // NEW: role + owner court
     const ROLE_KEY = "tp_role"; // "player" | "owner"
     const OWNER_COURT_KEY = "tp_owner_court"; // e.g. "greenhills2"
@@ -35,7 +32,6 @@
             localStorage.removeItem(AUTH_KEY);
             localStorage.removeItem(ROLE_KEY);
             localStorage.removeItem(OWNER_COURT_KEY);
-            localStorage.removeItem(USERNAME_KEY); // NEW
         }
     };
 
@@ -157,7 +153,6 @@
                     setLoggedIn(true);
                     setRole(data.role || "");
                     setOwnerCourt(data.ownerCourt || "");
-                    localStorage.setItem(USERNAME_KEY, data.username || ""); // NEW
 
                     updateAuthNav();
                     window.location.href = data.role === "owner" ? "Owner Dashboard.html" : "Profile Page.html";
@@ -177,7 +172,6 @@
                     setLoggedIn(true);
                     setRole(data.role || "");
                     setOwnerCourt(data.ownerCourt || "");
-                    localStorage.setItem(USERNAME_KEY, data.username || ""); // NEW
 
                     updateAuthNav();
                     window.location.href = data.role === "owner" ? "Owner Dashboard.html" : "Profile Page.html";
