@@ -252,13 +252,14 @@
                     .join("");
 
                 if (loggedIn) {
-                    el.querySelectorAll('a[data-reserve="1"]').forEach((a) => {
-                        a.addEventListener("click", (e) => {
-                            e.preventDefault();
-                            alert(`Sample booking flow for ${courtName}: (not implemented yet).`);
-                        });
+                el.querySelectorAll('a[data-reserve="1"]').forEach((a) => {
+                    a.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        alert(`Sample booking flow for ${courtName}: (not implemented yet).`);
                     });
+                });
                 }
+
             }
 
             (function initCourtProfile() {
@@ -301,15 +302,12 @@
                 const bookBtn = document.getElementById("btn-book");
                 if (bookBtn) {
                     if (loggedIn) {
-                        bookBtn.href = "#";
-                        bookBtn.addEventListener("click", (e) => {
-                            e.preventDefault();
-                            alert(`Sample booking flow for ${court.name}: (not implemented yet).`);
-                        });
+                        bookBtn.href = `Court Reservation Page.html?court=${encodeURIComponent(key)}`;
                     } else {
                         bookBtn.href = "Login Page.html";
                     }
                 }
+
             })();
         </script>
     </body>

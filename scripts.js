@@ -241,11 +241,20 @@
     const dateInput = document.getElementById("res-date");
     const slotsEl = document.getElementById("time-slots");
     const reserveBtn = document.getElementById("reserve-btn");
+    const backBtn = document.getElementById("back-to-court");
 
     if (!dateInput || !slotsEl || !reserveBtn) return;
 
     const params = new URLSearchParams(window.location.search);
     const court = params.get("court") || "greenhills2";
+    const bookingCourt = document.getElementById("booking-court");
+    if (bookingCourt) {
+    bookingCourt.textContent = `Booking for: ${court.replace(/_/g, " ")}`;
+    }
+
+    if (backBtn) {
+        backBtn.href = `Court Profile Page.html?court=${encodeURIComponent(court)}`;
+    }
 
     const TIMES = ["5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM"];
 
