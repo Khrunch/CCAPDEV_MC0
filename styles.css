@@ -166,6 +166,17 @@ input[type="text"], input[type="mobile_no"] {
     font-size: 14px;
 }
 
+button[type="submit"] {
+    padding: 10px 14px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #4facfe, #9b5cff);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
 .login-form button {
     width: 100%;
     padding: 12px 0;
@@ -234,12 +245,20 @@ input[type="text"], input[type="mobile_no"] {
     gap: 16px;
 }
 
+/* Card hover "lift" effect */
 .card {
     border: 1px solid #e5e5e5;
     border-radius: 16px;
     padding: 18px;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
     background: #fff;
+    transition: transform 160ms ease, box-shadow 160ms ease;
+    will-change: transform;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.10);
 }
 
 .card-title {
@@ -466,4 +485,14 @@ input[type="text"], input[type="mobile_no"] {
   justify-content: center;
   gap: 12px;
   margin-top: 12px;
+}
+
+/* Accessibility: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .card {
+        transition: none;
+    }
+    .card:hover {
+        transform: none;
+    }
 }

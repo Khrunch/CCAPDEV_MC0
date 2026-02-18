@@ -233,19 +233,21 @@
                 el.innerHTML = items.map((x) => `<p class="card-text">${x}</p>`).join("");
             }
 
-            function renderAvailability(el, slots, loggedIn, courtName) {
+            function renderAvailability(el, slots, loggedIn, courtName, courtKey) {
                 if (!el) return;
 
                 el.innerHTML = slots
                     .map((s) => {
                         const disabled = s.status.toLowerCase() === "full";
-                        const href = loggedIn ? "#" : "Login Page.html";
+                        const href = loggedIn
+                            ? `Court Reservation Page.html?court=${encodeURIComponent(courtKey)}`
+                            : "Login Page.html";
                         const label = disabled ? "Unavailable" : "Reserve";
                         return `
                             <article class="card">
                                 <h3 class="card-title">${s.time}</h3>
                                 <p class="card-text">${s.court} · <strong>${s.status}</strong></p>
-                                <a class="card-link" href="${href}" ${disabled ? 'onclick="return false;"' : ""} data-reserve="1">${label}</a>
+                                <a class="card-link" href="${href}" ${disabled ? 'onclick="return false;"' : ""}>${label}</a>
                             </article>
                         `;
                     })
@@ -291,7 +293,8 @@
                     document.getElementById("court-availability"),
                     court.availability,
                     loggedIn,
-                    court.name
+                    court.name,
+                    key // NEW
                 );
 
                 const locEl = document.getElementById("court-location");
@@ -301,11 +304,9 @@
 
                 const bookBtn = document.getElementById("btn-book");
                 if (bookBtn) {
-                    if (loggedIn) {
-                        bookBtn.href = `Court Reservation Page.html?court=${encodeURIComponent(key)}`;
-                    } else {
-                        bookBtn.href = "Login Page.html";
-                    }
+                    bookBtn.href = loggedIn
+                        ? `Court Reservation Page.html?court=${encodeURIComponent(key)}`
+                        : "Login Page.html";
                 }
 
             })();
