@@ -17,7 +17,6 @@
                     <span class="brand-text">TerryPick</span>                    
                 </a>
             </div>
-
             <div class="top-nav-right">
                 <a href="About Us.html">About Us</a>
                 <a class="btn btn-ghost" href="Home Page.html">Home</a>
@@ -26,10 +25,10 @@
 
         <main class="page">
             <section class="profile-hero">
-                <div class="profile-avatar" aria-hidden="true">CP</div>
+                <div id="edit-court-avatar" class="profile-avatar" aria-hidden="true">CO</div>
                 <div class="profile-hero-text">
-                    <h1 class="profile-name">Greenhills Court</h1>
-                    <p class="profile-meta">Location: <strong>Makati City</strong> · Member since <strong>2024</strong></p>
+                    <h1 id="edit-court-name-header" class="profile-name">Loading...</h1>
+                    <p id="edit-court-meta" class="profile-meta">Location: <strong>...</strong></p>
                 </div>
             </section>
 
@@ -37,31 +36,29 @@
                 <div class="profile-hero-text">
                     <h1 class="profile-name">Edit Court Profile</h1>
                     <form action="/edit-court-profile" method="post">
-                        <label for="court-name">Court Name</label>
+                        
+                        <input type="hidden" id="edit-original-court-name" name="original-court-name">
+
+                        <label for="court-name">Court Display Name</label>
                         <input type="text" id="court-name" name="court-name" required>
 
-                        <label for="location">Location</label>
+                        <label for="location">Address</label>
                         <input type="text" id="location" name="location" required>
 
-                        <label for="description">Description</label>
-                        <input type="text" id="description" name="description" required>
+                        <label for="description">General Description</label>
+                        <textarea id="description" name="description" style="box-sizing: border-box; width: 100%; padding: 10px 2.5px; margin: 0 0 20px; border: none; border-bottom: 1px solid #ccc; font-family: 'Montserrat', sans-serif; font-size: 14px; background: transparent;"></textarea>
 
-                        <label for="amenities">Amenities</label>
-                        <input type="text" id="amenities" name="amenities" required>
+                        <label for="amenities">Amenities (Comma separated: Parking, Showers, etc.)</label>
+                        <input type="text" id="amenities" name="amenities">
 
-                        <label for="rates">Rates</label>
-                        <input type="text" id="rates" name="rates" required>
+                        <label for="rates">Rate per Hour (PHP)</label>
+                        <input type="number" id="rates" name="rates" style="box-sizing: border-box; width: 100%; padding: 10px 2.5px; margin: 0 0 20px; border: none; border-bottom: 1px solid #ccc; font-family: 'Montserrat', sans-serif; font-size: 14px; background: transparent;">
 
-                        <label for="rules">Rules</label>
-                        <input type="text" id="rules" name="rules" required>
-
-                        <button type="submit">Save Changes</button>
+                        <button type="submit" class="btn btn-primary">Update Court</button>
                     </form>
                 </div>
             </section>
-
         </main>
-
-        <script defer src="scripts.js"></script>
+        <script defer src="scriptsUpdated.js"></script>
     </body>
 </html>

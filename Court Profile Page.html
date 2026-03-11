@@ -8,7 +8,6 @@
         <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/16117/16117721.png">
         <link rel="stylesheet" href="styles.css">
     </head>
-
     <body>
         <div class="top-nav">
             <div class="top-nav-left">
@@ -17,20 +16,13 @@
                     <span class="brand-text">TerryPick</span>
                 </a>
             </div>
-
-            <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="top-nav-menu">
-                &#8942;
-            </button>
-
+            <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="top-nav-menu">&#8942;</button>
             <div class="top-nav-right" id="top-nav-menu">
                 <a href="About Us.html">About Us</a>
                 <a class="btn btn-ghost" href="Home Page.html">Home</a>
                 <a id="nav-login" href="Login Page.html">Login</a>
                 <a id="nav-profile" class="btn btn-ghost" href="Profile Page.html" style="display:none;">Profile</a>
-
-                <!-- NEW -->
                 <a id="nav-owner" class="btn btn-ghost" href="Owner Dashboard.html" style="display:none;">Owner Dashboard</a>
-
                 <a id="nav-primary" class="btn btn-primary" href="Signup Page.html">Sign Up</a>
             </div>
         </div>
@@ -38,36 +30,25 @@
         <main class="page">
             <section class="profile-hero">
                 <div id="court-avatar" class="profile-avatar" aria-hidden="true">TP</div>
-
                 <div class="profile-hero-text">
                     <h1 id="court-name" class="profile-name">Court</h1>
                     <p id="court-meta" class="profile-meta"></p>
-
                     <div class="profile-actions">
                         <a id="btn-book" class="btn btn-primary" href="Login Page.html">Book a slot</a>
-
-                        <!-- NEW: only shows if owner is viewing their own court -->
+                        <button id="btn-save-court" class="btn btn-ghost" style="display:none; cursor: pointer;">☆ Save Court</button>
+                        
                         <a id="btn-manage" class="btn btn-ghost" href="Owner Dashboard.html" style="display:none;">Manage court</a>
-
-                        <a class="btn btn-ghost" href="Home Page.html">Back to Home</a>
                     </div>
                 </div>
             </section>
 
             <section class="home-section">
                 <h2 class="home-section-title">At a glance</h2>
-
                 <div class="card-grid">
                     <article class="card">
                         <h3 class="card-title">Amenities</h3>
                         <div id="court-amenities" class="card-text"></div>
                     </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Rates (sample)</h3>
-                        <div id="court-rates" class="card-text"></div>
-                    </article>
-
                     <article class="card">
                         <h3 class="card-title">Rules</h3>
                         <div id="court-rules" class="card-text"></div>
@@ -75,245 +56,22 @@
                 </div>
             </section>
 
-            <section class="home-section">
-                <h2 class="home-section-title">Today’s availability (sample)</h2>
-
-                <div id="court-availability" class="card-grid"></div>
-            </section>
-
-            <section class="home-section">
-                <h2 class="home-section-title">Location (sample)</h2>
-                <div id="court-location" class="card"></div>
-            </section>
-
-            <!-- NEW: Reviews section (placed directly below Location) -->
             <section class="home-section" id="reviews-section">
                 <h2 class="home-section-title">Reviews</h2>
 
-                <div class="profile-actions" style="margin-bottom: 12px;">
-                    <a id="btn-leave-review" class="btn btn-ghost" href="Login Page.html">Leave a review</a>
+                <div style="margin-bottom: 20px; max-width: 500px;">
+                    <form id="review-form">
+                        <label>Rating (1-5):</label>
+                        <input type="number" id="review-rating" min="1" max="5" required style="width: 50px; margin-bottom: 10px;">
+                        <textarea id="review-comment" placeholder="Leave a review..." required style="width: 100%; height: 80px; margin-bottom: 10px;"></textarea>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                    </form>
                 </div>
 
                 <div id="court-reviews" class="card-grid"></div>
             </section>
         </main>
 
-        <script defer src="scripts.js"></script>
-
-        <script>
-            // demo-only: matches scripts.js AUTH_KEY
-            const AUTH_KEY = "tp_logged_in";
-
-            const COURTS = {
-                greenhills2: {
-                    initials: "GC",
-                    name: "Greenhills Court 2",
-                    type: "Outdoor",
-                    surface: "Hardcourt",
-                    courts: 2,
-                    address: "Ortigas Ave, San Juan, Metro Manila",
-                    amenities: ["Parking", "Restrooms", "Water station", "Lights (evening play)"],
-                    rates: ["₱350 / hour (weekday)", "₱450 / hour (weekend)"],
-                    rules: ["Bring your own paddles", "No outside food on court"],
-                    availability: [
-                        { time: "6:00 PM - 7:00 PM", court: "Court 2", status: "Available" },
-                        { time: "7:00 PM - 8:00 PM", court: "Court 2", status: "Limited" },
-                        { time: "8:00 PM - 9:00 PM", court: "Court 2", status: "Full" },
-                    ],
-                    locationNotes: [
-                        "Nearest landmark: Greenhills Shopping Center (5–10 min walk).",
-                        "Tip: Arrive 10 minutes early for check-in.",
-                    ],
-                },
-
-                bgc_rooftop: {
-                    initials: "BR",
-                    name: "BGC Rooftop Pickle",
-                    type: "Outdoor",
-                    surface: "Acrylic",
-                    courts: 1,
-                    address: "9th Ave, BGC, Taguig, Metro Manila",
-                    amenities: ["Paid parking", "Locker area (limited)", "Rooftop lights"],
-                    rates: ["₱500 / hour (any day)", "₱200 equipment rental (optional)"],
-                    rules: ["No metal studs", "Last entry 9:30 PM"],
-                    availability: [
-                        { time: "5:00 PM - 6:00 PM", court: "Court 1", status: "Available" },
-                        { time: "6:00 PM - 7:00 PM", court: "Court 1", status: "Full" },
-                        { time: "7:00 PM - 8:00 PM", court: "Court 1", status: "Available" },
-                    ],
-                    locationNotes: [
-                        "Rooftop access via Building B elevator (ask guard).",
-                        "Bring a light jacket (windy at night).",
-                    ],
-                },
-
-                makati_gym: {
-                    initials: "MG",
-                    name: "Makati Central Gym",
-                    type: "Indoor",
-                    surface: "Wooden",
-                    courts: 3,
-                    address: "J.P. Rizal Ave, Makati, Metro Manila",
-                    amenities: ["Restrooms", "Water refill", "Benches", "Air-conditioned"],
-                    rates: ["₱300 / hour (member)", "₱400 / hour (walk-in)"],
-                    rules: ["Non-marking shoes required", "No food inside the gym"],
-                    availability: [
-                        { time: "4:00 PM - 5:00 PM", court: "Court A", status: "Limited" },
-                        { time: "5:00 PM - 6:00 PM", court: "Court B", status: "Available" },
-                        { time: "6:00 PM - 7:00 PM", court: "Court C", status: "Available" },
-                    ],
-                    locationNotes: [
-                        "Check-in at the front desk before entering.",
-                        "Peak hours: 5-8 PM.",
-                    ],
-                },
-
-                qc_community: {
-                    initials: "QC",
-                    name: "Quezon City Community Courts",
-                    type: "Outdoor",
-                    surface: "Concrete",
-                    courts: 4,
-                    address: "Commonwealth Ave, Quezon City, Metro Manila",
-                    amenities: ["Free parking (limited)", "Covered waiting area"],
-                    rates: ["₱150 / hour (community rate)", "₱250 / hour (night schedule)"],
-                    rules: ["First-come, first-served for walk-ins", "Respect quiet hours after 10 PM"],
-                    availability: [
-                        { time: "3:00 PM - 4:00 PM", court: "Court 3", status: "Available" },
-                        { time: "4:00 PM - 5:00 PM", court: "Court 1", status: "Available" },
-                        { time: "5:00 PM - 6:00 PM", court: "Court 2", status: "Limited" },
-                    ],
-                    locationNotes: [
-                        "Best time to play: late afternoon (less heat).",
-                        "Bring water—nearest store is a short walk away.",
-                    ],
-                },
-
-                alabang_hub: {
-                    initials: "AH",
-                    name: "Alabang Sports Hub",
-                    type: "Indoor",
-                    surface: "Rubberized",
-                    courts: 2,
-                    address: "Alabang-Zapote Rd, Muntinlupa, Metro Manila",
-                    amenities: ["Parking", "Showers", "Pro shop (limited)"],
-                    rates: ["₱450 / hour (weekday)", "₱550 / hour (weekend)"],
-                    rules: ["No resin/talc", "Equipment returns within 10 minutes"],
-                    availability: [
-                        { time: "6:00 PM - 7:00 PM", court: "Court 1", status: "Full" },
-                        { time: "7:00 PM - 8:00 PM", court: "Court 2", status: "Available" },
-                        { time: "8:00 PM - 9:00 PM", court: "Court 1", status: "Limited" },
-                    ],
-                    locationNotes: [
-                        "Allow extra time for parking on weekends.",
-                        "Reception closes at 10 PM.",
-                    ],
-                },
-
-                pasig_riverside: {
-                    initials: "PR",
-                    name: "Pasig Riverside Courts",
-                    type: "Outdoor",
-                    surface: "Hardcourt",
-                    courts: 2,
-                    address: "Riverside Dr, Pasig, Metro Manila",
-                    amenities: ["Street parking", "Nearby café", "Public restrooms (park)"],
-                    rates: ["₱200 / hour (daytime)", "₱300 / hour (with lights)"],
-                    rules: ["No glass bottles", "Clean as you go"],
-                    availability: [
-                        { time: "6:00 AM - 7:00 AM", court: "Court 1", status: "Available" },
-                        { time: "7:00 AM - 8:00 AM", court: "Court 2", status: "Available" },
-                        { time: "8:00 AM - 9:00 AM", court: "Court 1", status: "Limited" },
-                    ],
-                    locationNotes: [
-                        "Morning sessions are cooler and less crowded.",
-                        "Some areas may be slippery after rain.",
-                    ],
-                },
-            };
-
-            function renderListLines(el, items) {
-                if (!el) return;
-                el.innerHTML = items.map((x) => `<p class="card-text">${x}</p>`).join("");
-            }
-
-            function renderAvailability(el, slots, loggedIn, courtName, courtKey) {
-                if (!el) return;
-
-                el.innerHTML = slots
-                    .map((s) => {
-                        const disabled = s.status.toLowerCase() === "full";
-                        const href = loggedIn
-                            ? `Court Reservation Page.html?court=${encodeURIComponent(courtKey)}`
-                            : "Login Page.html";
-                        const label = disabled ? "Unavailable" : "Reserve";
-                        return `
-                            <article class="card">
-                                <h3 class="card-title">${s.time}</h3>
-                                <p class="card-text">${s.court} · <strong>${s.status}</strong></p>
-                                <a class="card-link" href="${href}" ${disabled ? 'onclick="return false;"' : ""}>${label}</a>
-                            </article>
-                        `;
-                    })
-                    .join("");
-
-                if (loggedIn) {
-                el.querySelectorAll('a[data-reserve="1"]').forEach((a) => {
-                    a.addEventListener("click", (e) => {
-                        e.preventDefault();
-                        alert(`Sample booking flow for ${courtName}: (not implemented yet).`);
-                    });
-                });
-                }
-
-            }
-
-            (function initCourtProfile() {
-                const params = new URLSearchParams(window.location.search);
-                const key = params.get("court") || "greenhills2";
-                const court = COURTS[key] || COURTS.greenhills2;
-
-                const avatarEl = document.getElementById("court-avatar");
-                const nameEl = document.getElementById("court-name");
-                const metaEl = document.getElementById("court-meta");
-
-                if (avatarEl) avatarEl.textContent = court.initials;
-                if (nameEl) nameEl.textContent = court.name;
-
-                if (metaEl) {
-                    metaEl.innerHTML = `
-                        <strong>${court.type}</strong> · <strong>${court.surface}</strong> · <strong>${court.courts} courts</strong><br>
-                        ${court.address}
-                    `;
-                }
-
-                renderListLines(document.getElementById("court-amenities"), court.amenities);
-                renderListLines(document.getElementById("court-rates"), court.rates);
-                renderListLines(document.getElementById("court-rules"), court.rules);
-
-                const loggedIn = localStorage.getItem(AUTH_KEY) === "1";
-
-                renderAvailability(
-                    document.getElementById("court-availability"),
-                    court.availability,
-                    loggedIn,
-                    court.name,
-                    key // NEW
-                );
-
-                const locEl = document.getElementById("court-location");
-                if (locEl) {
-                    locEl.innerHTML = court.locationNotes.map((x) => `<p class="card-text">${x}</p>`).join("");
-                }
-
-                const bookBtn = document.getElementById("btn-book");
-                if (bookBtn) {
-                    bookBtn.href = loggedIn
-                        ? `Court Reservation Page.html?court=${encodeURIComponent(key)}`
-                        : "Login Page.html";
-                }
-
-            })();
-        </script>
+        <script defer src="scriptsUpdated.js"></script>
     </body>
 </html>

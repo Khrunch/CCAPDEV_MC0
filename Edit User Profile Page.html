@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>TerryPick! - Profile</title>
+        <title>TerryPick! - Edit Profile</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
         <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/16117/16117721.png">
         <link rel="stylesheet" href="styles.css">
     </head>
-
     <body>
         <div class="top-nav">
             <div class="top-nav-left">
@@ -17,7 +16,6 @@
                     <span class="brand-text">TerryPick</span>                    
                 </a>
             </div>
-
             <div class="top-nav-right">
                 <a href="About Us.html">About Us</a>
                 <a class="btn btn-ghost" href="Home Page.html">Home</a>
@@ -26,30 +24,36 @@
 
         <main class="page">
             <section class="profile-hero">
-                <div class="profile-avatar" aria-hidden="true">TP</div>
+                <div id="edit-profile-avatar" class="profile-avatar" aria-hidden="true">TP</div>
                 <div class="profile-hero-text">
-                    <h1 class="profile-name">Terry Parker</h1>
-                    <p class="profile-meta">Username: <strong>terryp</strong> · Member since <strong>2026</strong></p>
+                    <h1 class="profile-name"><strong id="profile-username">---</strong></h1>
+                    <p class="profile-meta">Member since <strong id="profile-member-since">2026</strong></p>
                 </div>
             </section>
 
             <section class="profile-hero">
                 <div class="profile-hero-text">
                     <h1 class="profile-name">Edit Profile</h1>
+
                     <form action="/edit-profile" method="post">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" required>
+                        <input type="hidden" id="edit-username-hidden" name="username">
 
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" required>
+                        <label for="display-username">Username (Read-only)</label>
+                        <input type="text" id="display-username" disabled>
 
-                        <button type="submit">Save Changes</button>
+                        <label for="password">Update Password (Leave blank to keep current)</label>
+                        <input type="password" id="password" name="password">
+
+                        <label for="bio">Bio / About Me</label>
+                        <textarea id="bio" name="bio" placeholder="Tell us about your pickleball experience..." 
+                            style="width: 100%; height: 120px; border-radius: 8px; border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; font-family: inherit;"></textarea>
+
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
                     </form>
                 </div>
             </section>
-
         </main>
 
-        <script defer src="scripts.js"></script>
+        <script defer src="scriptsUpdated.js"></script>
     </body>
 </html>

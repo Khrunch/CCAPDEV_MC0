@@ -8,7 +8,6 @@
         <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/16117/16117721.png">
         <link rel="stylesheet" href="styles.css">
     </head>
-
     <body>
         <div class="top-nav">
             <div class="top-nav-left">
@@ -17,11 +16,7 @@
                     <span class="brand-text">TerryPick</span>
                 </a>
             </div>
-
-            <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="top-nav-menu">
-                &#8942;
-            </button>
-
+            <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="top-nav-menu">&#8942;</button>
             <div class="top-nav-right" id="top-nav-menu">
                 <a href="About Us.html">About Us</a>
                 <a class="btn btn-ghost" href="Home Page.html">Home</a>
@@ -32,87 +27,29 @@
         <main class="page">
             <section class="profile-hero">
                 <div class="profile-avatar" aria-hidden="true">CO</div>
-
                 <div class="profile-hero-text">
                     <h1 class="profile-name">Court Owner Dashboard</h1>
-                    <p id="owner-subtitle" class="profile-meta">Manage your court, reservations, and profile (sample).</p>
-
+                    <p id="owner-subtitle" class="profile-meta">Manage your court, reservations, and profile.</p>
                     <div class="profile-actions">
-                        <a id="owner-view-court" class="btn btn-ghost" href="Court Profile Page.html?court=greenhills2">View public court page</a>
+                        <a id="owner-view-court" class="btn btn-ghost" href="#">View public court page</a>
                         <a class="btn btn-primary" href="Edit Court Profile Page.html" id="btn-edit-court">Edit court profile</a>
                     </div>
                 </div>
             </section>
 
             <section class="home-section">
-                <h2 class="home-section-title">Reservation requests (sample)</h2>
-
-                <div class="card-grid">
-                    <article class="card">
-                        <h3 class="card-title">Request #1024</h3>
-                        <p class="card-text">Player: terryp</p>
-                        <p class="card-text">Feb 20, 2026 · 6:00 PM - 7:00 PM · Court 2</p>
-                        <a class="card-link" href="#" data-action="approve">Approve</a>
-                        <span> · </span>
-                        <a class="card-link" href="#" data-action="reject">Reject</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Request #1025</h3>
-                        <p class="card-text">Player: guest123</p>
-                        <p class="card-text">Feb 20, 2026 · 7:00 PM - 8:00 PM · Court 2</p>
-                        <a class="card-link" href="#" data-action="approve">Approve</a>
-                        <span> · </span>
-                        <a class="card-link" href="#" data-action="reject">Reject</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Request #1026</h3>
-                        <p class="card-text">Player: alexr</p>
-                        <p class="card-text">Feb 21, 2026 · 5:00 PM - 6:00 PM · Court 1</p>
-                        <a class="card-link" href="#" data-action="approve">Approve</a>
-                        <span> · </span>
-                        <a class="card-link" href="#" data-action="reject">Reject</a>
-                    </article>
-                </div>
+                <h2 class="home-section-title">Reservation requests</h2>
+                <div id="owner-requests-grid" class="card-grid"></div>
             </section>
         </main>
-
-        <script defer src="scripts.js"></script>
-
+        
+        <script defer src="scriptsUpdated.js"></script>
         <script>
-            // minimal demo logic
-            const OWNER_COURT_KEY = "tp_owner_court";
-            const ROLE_KEY = "tp_role";
-            const AUTH_KEY = "tp_logged_in";
-
-            const isOwner = localStorage.getItem(AUTH_KEY) === "1" && localStorage.getItem(ROLE_KEY) === "owner";
-            if (!isOwner) {
-                // keep it simple for now
-                alert("Owner Dashboard is for Court Owner accounts only (demo).");
-                window.location.href = "Home Page.html";
-            }
-
-            const params = new URLSearchParams(window.location.search);
-            const court = params.get("court") || localStorage.getItem(OWNER_COURT_KEY) || "greenhills2";
-
-            const viewCourt = document.getElementById("owner-view-court");
-            if (viewCourt) viewCourt.href = `Court Profile Page.html?court=${encodeURIComponent(court)}`;
-/*
-            document.getElementById("btn-edit-court")?.addEventListener("click", (e) => {
-                e.preventDefault();
-                alert("Sample edit flow: (not implemented yet).");
-            });
-*/
-            document.addEventListener("click", (e) => {
-                const a = e.target.closest("a[data-action]");
-                if (!a) return;
-
-                const action = a.dataset.action;
-                if (action !== "approve" && action !== "reject") return;
-
-                e.preventDefault();
-                alert(`Sample action: ${action.toUpperCase()} (not implemented yet).`);
+            // Setup the 'View Court' dynamic link quickly
+            document.addEventListener("DOMContentLoaded", () => {
+                const court = localStorage.getItem("tp_owner_court");
+                const viewCourt = document.getElementById("owner-view-court");
+                if (viewCourt && court) viewCourt.href = `Court Profile Page.html?court=${encodeURIComponent(court)}`;
             });
         </script>
     </body>

@@ -1,309 +1,288 @@
-const http = require("http");
-const fs = require("fs");
+const express = require("express");
+const mongoose = require("mongoose");
 const path = require("path");
-const { URL } = require("url");
 
+const User = require("./models/Users");
+const Court = require("./models/Courts");
+const Reservation = require("./models/Reservations");
+const Review = require("./models/Reviews");
+
+const app = express();
 const hostname = "localhost";
 const port = 3000;
 
+const mongodb_URI = 'mongodb://player:qwerty12345@ac-nkebxal-shard-00-00.mebmczc.mongodb.net:27017,ac-nkebxal-shard-00-01.mebmczc.mongodb.net:27017,ac-nkebxal-shard-00-02.mebmczc.mongodb.net:27017/TerryPick?ssl=true&replicaSet=atlas-27jkma-shard-0&authSource=admin&appName=CCAPDEV';
 
-//connect to mongodb
-const mongodb = 'mongodb+srv://player:qwerty12345@ccapdev.mebmczc.mongodb.net/?appName=CCAPDEV&retryWrites=true&w=majority';
- 
+mongoose.connect(mongodb_URI)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
-const PUBLIC_DIR = __dirname;
-
-const MIME_TYPES = {
-  ".html": "text/html; charset=utf-8",
-  ".css": "text/css; charset=utf-8",
-  ".js": "application/javascript; charset=utf-8",
-  ".json": "application/json; charset=utf-8",
-  ".png": "image/png",
-  ".jpg": "image/jpeg",
-  ".jpeg": "image/jpeg",
-  ".gif": "image/gif",
-  ".svg": "image/svg+xml",
-  ".ico": "image/x-icon",
-  ".txt": "text/plain; charset=utf-8",
-};
-
-function send(res, statusCode, headers, body) {
-  res.writeHead(statusCode, headers);
-  res.end(body);
-}
-
-function sendJson(res, statusCode, data) {
-  send(
-    res,
-    statusCode,
-    { "Content-Type": "application/json; charset=utf-8" },
-    JSON.stringify(data)
-  );
-}
-
-function readBody(req) {
-  return new Promise((resolve, reject) => {
-    let data = "";
-    req.on("data", (chunk) => (data += chunk));
-    req.on("end", () => resolve(data));
-    req.on("error", reject);
-  });
-}
-
-function parseForm(body) {
-  const out = {};
-  const params = new URLSearchParams(body);
-  for (const [k, v] of params.entries()) out[k] = v;
-  return out;
-}
+app.use(express.static(__dirname));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 function slugifyCourtKey(name) {
-  return (
-    String(name || "")
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, "_")
-      .replace(/[^a-z0-9_]/g, "")
-      .slice(0, 40) || "court"
-  );
+  return (String(name || "").trim().toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "").slice(0, 40) || "court");
 }
 
-/**
- * Hardcoded / in-memory users (DEMO ONLY)
- * NOTE: resets when server restarts
- */
-const usersByUsername = new Map();
-
-const reservations = {};
-
-// seed demo accounts
-usersByUsername.set("terryp", {
-  username: "terryp",
-  password: "pickle123",
-  role: "player",
-  courtKey: "",
-});
-
-usersByUsername.set("owner1", {
-  username: "owner1",
-  password: "pickle123",
-  role: "owner",
-  courtKey: "greenhills2",
-});
-
-usersByUsername.set("alexr", {
-  username: "alexr",
-  password: "pickle123",
-  role: "player",
-  courtKey: "",
-});
-
-usersByUsername.set("guest123", {
-  username: "guest123",
-  password: "pickle123",
-  role: "player",
-  courtKey: "",
-});
-
-usersByUsername.set("sammyg", {
-  username: "sammyg",
-  password: "pickle123",
-  role: "player",
-  courtKey: "",
-});
-
-usersByUsername.set("owner2", {
-  username: "owner2",
-  password: "pickle123",
-  role: "owner",
-  courtKey: "bgc_rooftop",
-});
-
-usersByUsername.set("owner3", {
-  username: "owner3",
-  password: "pickle123",
-  role: "owner",
-  courtKey: "makati_gym",
-});
-
-function safeResolveFromPublic(requestPath) {
-  const cleaned = requestPath.replace(/^\/+/, "");
-  const resolved = path.resolve(PUBLIC_DIR, cleaned);
-  const publicRoot = path.resolve(PUBLIC_DIR);
-
-  if (!resolved.startsWith(publicRoot + path.sep) && resolved !== publicRoot) {
-    return null;
-  }
-  return resolved;
+function parseDateTime(dateStr, timeStr) {
+    if (timeStr.includes(' ')) {
+        const [time, period] = timeStr.split(' ');
+        let [hours, minutes] = time.split(':');
+        hours = parseInt(hours, 10);
+        if (period === 'PM' && hours !== 12) hours += 12;
+        if (period === 'AM' && hours === 12) hours = 0;
+        return new Date(`${dateStr}T${String(hours).padStart(2, '0')}:${minutes}:00`);
+    }
+    return new Date(`${dateStr}T${timeStr}:00`);
 }
 
-const server = http.createServer(async (req, res) => {
+// ----------------------------------------------------
+// AUTH ROUTES
+// ----------------------------------------------------
+app.post('/signup', async (req, res) => {
   try {
-    if (!req.url) {
-      return send(res, 400, { "Content-Type": "text/plain; charset=utf-8" }, "Bad Request");
-    }
+    const { username, password, retype_password, court_name, address } = req.body;
+    const isOwnerSignup = !!(court_name && String(court_name).trim() !== "");
 
-    const url = new URL(req.url, `http://${req.headers.host || `${hostname}:${port}`}`);
-    const pathname = decodeURIComponent(url.pathname);
+    if (password !== retype_password) return res.status(400).json({ ok: false, error: "Passwords do not match." });
 
-    // normalize trailing slashes ("/signup/" -> "/signup")
-    const route = pathname.replace(/\/+$/, "") || "/";
-
-    console.log(`${new Date().toISOString()} ${req.method} ${route}`);
-
-    // =========================
-    // API routes (DEMO ONLY)
-    // =========================
-    if (req.method === "POST" && (route === "/signup" || route === "/login")) {
-      const contentType = String(req.headers["content-type"] || "");
-      const raw = await readBody(req);
-
-      const data =
-        contentType.includes("application/json") ? JSON.parse(raw || "{}") : parseForm(raw || "");
-
-      if (route === "/signup") {
-        const username = String(data.username || "").trim();
-        const password = String(data.password || "");
-        const retype = String(data.retype_password || "");
-
-        const isOwnerSignup = data.court_name != null && String(data.court_name).trim() !== "";
-
-        if (!username || !password) {
-          return sendJson(res, 400, { ok: false, error: "Username and password are required." });
-        }
-        if (password !== retype) {
-          return sendJson(res, 400, { ok: false, error: "Passwords do not match." });
-        }
-        if (usersByUsername.has(username)) {
-          return sendJson(res, 409, { ok: false, error: "Username already exists." });
-        }
-
-        const role = isOwnerSignup ? "owner" : "player";
-        const ownerCourt =
-          role === "owner" ? slugifyCourtKey(String(data.court_name || "")) : "";
-
-        usersByUsername.set(username, {
-          username,
-          password, // demo only (plaintext)
-          role,
-          courtKey: ownerCourt,
-          courtName: role === "owner" ? String(data.court_name || "").trim() : "",
-          address: role === "owner" ? String(data.address || "").trim() : "",
-          mobileNo: role === "owner" ? String(data.mobile_no || "").trim() : "",
-          createdAt: new Date(),
-          lastLogin: null,
+    const newUser = new User({ username: username.trim(), password: password, role: isOwnerSignup ? "owner" : "player" });
+    const savedUser = await newUser.save();
+    
+    let ownerCourtKey = "";
+    if (isOwnerSignup) {
+        ownerCourtKey = slugifyCourtKey(court_name);
+        const newCourt = new Court({
+            name: ownerCourtKey, location: { address: address },
+            ownerId: savedUser._id, type: 'indoor', description: `Official court for ${username}`
         });
-
-        return sendJson(res, 201, { ok: true, username, role, ownerCourt });
-      }
-
-      if (route === "/login") {
-        const username = String(data.username || "").trim();
-        const password = String(data.password || "");
-
-        if (!username || !password) {
-          return sendJson(res, 400, { ok: false, error: "Username and password are required." });
-        }
-
-        const user = usersByUsername.get(username);
-        if (!user || user.password !== password) {
-          return sendJson(res, 401, { ok: false, error: "Invalid credentials." });
-        }
-
-        user.lastLogin = new Date();
-
-        return sendJson(res, 200, {
-          ok: true,
-          username: user.username,
-          role: user.role,
-          ownerCourt: user.courtKey || "",
-        });
-      }
+        const savedCourt = await newCourt.save();
+        savedUser.courtId = savedCourt._id;
+        await savedUser.save();
     }
-
-    // if someone navigates to /signup or /login in the browser, redirect to the HTML pages
-    if (req.method === "GET" && route === "/signup") {
-      res.writeHead(302, { Location: "/Signup Page.html" });
-      return res.end();
-    }
-    if (req.method === "GET" && route === "/login") {
-      res.writeHead(302, { Location: "/Login Page.html" });
-      return res.end();
-    }
-
-    // =========================
-    // Reservation API (DEMO ONLY)
-    // =========================
-    if (req.method === "GET" && route === "/availability") {
-      const court = url.searchParams.get("court");
-      const date = url.searchParams.get("date");
-
-      if (!court || !date) {
-        return sendJson(res, 400, { ok: false, error: "court and date are required" });
-      }
-
-      const booked =
-        reservations[court]?.[date]
-          ? Array.from(reservations[court][date])
-          : [];
-
-      return sendJson(res, 200, { ok: true, booked });
-    }
-
-    if (req.method === "POST" && route === "/reserve") {
-      const raw = await readBody(req);
-      const data = JSON.parse(raw || "{}");
-
-      const { court, date, time, username } = data;
-
-      if (!court || !date || !time || !username) {
-        return sendJson(res, 400, { ok: false, error: "Missing fields" });
-      }
-
-      reservations[court] ??= {};
-      reservations[court][date] ??= new Set();
-
-      if (reservations[court][date].has(time)) {
-        return sendJson(res, 409, { ok: false, error: "Slot already booked" });
-      }
-
-      reservations[court][date].add(time);
-      return sendJson(res, 201, { ok: true });
-    }
-
-    // =========================
-    // static file handling
-    // =========================
-    let staticPathname = pathname;
-    if (staticPathname === "/") staticPathname = "/Home Page.html";
-
-    const filePath = safeResolveFromPublic(staticPathname);
-    if (!filePath) {
-      return send(res, 403, { "Content-Type": "text/plain; charset=utf-8" }, "Forbidden");
-    }
-
-    fs.stat(filePath, (err, stat) => {
-      if (err || !stat.isFile()) {
-        return send(res, 404, { "Content-Type": "text/plain; charset=utf-8" }, "Not Found");
-      }
-
-      const ext = path.extname(filePath).toLowerCase();
-      const contentType = MIME_TYPES[ext] || "application/octet-stream";
-
-      res.writeHead(200, { "Content-Type": contentType });
-
-      const stream = fs.createReadStream(filePath);
-      stream.on("error", () => {
-        send(res, 500, { "Content-Type": "text/plain; charset=utf-8" }, "Server Error");
-      });
-      stream.pipe(res);
-    });
-  } catch (e) {
-    console.error("REQUEST ERROR:", e);
-    send(res, 500, { "Content-Type": "text/plain; charset=utf-8" }, "Server Error");
+    return res.status(201).json({ ok: true, username: savedUser.username, role: savedUser.role, ownerCourt: ownerCourtKey });
+  } catch (error) {
+    if (error.code === 11000) return res.status(409).json({ ok: false, error: "Username already exists." });
+    res.status(500).json({ ok: false, error: "Server error during signup." });
   }
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+app.post('/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username: username.trim() }).populate('courtId');
+    if (!user || user.password !== password) return res.status(401).json({ ok: false, error: "Invalid credentials." });
+    const ownerCourt = user.courtId ? user.courtId.name : "";
+    return res.status(200).json({ ok: true, username: user.username, role: user.role, ownerCourt });
+  } catch (error) { res.status(500).json({ error: "Server error during login." }); }
 });
+
+// ----------------------------------------------------
+// PROFILE & COURT UPDATES
+// ----------------------------------------------------
+app.post('/edit-profile', async (req, res) => {
+    try {
+        const { username, password, bio } = req.body;
+        let updateData = { bio: bio || "" };
+        if (password && password.trim() !== "") updateData.password = password; 
+        await User.findOneAndUpdate({ username }, updateData);
+        res.redirect('/Profile Page.html');
+    } catch (err) { res.status(500).send("Update failed."); }
+});
+
+// FIXED: COURT UPDATE (Using hidden original-court-name)
+app.post('/edit-court-profile', async (req, res) => {
+    try {
+        const { "original-court-name": originalName, location, description, rates, amenities } = req.body;
+        
+        if (!originalName) return res.status(400).send("Error: Original court key missing.");
+
+        await Court.findOneAndUpdate(
+            { name: originalName }, 
+            { $set: {
+                "location.address": location, 
+                description: description, 
+                rates: { weekday: parseInt(rates) || 0, weekend: parseInt(rates) || 0 }, 
+                amenities: amenities ? amenities.split(',').map(s => s.trim()) : []
+            }}
+        );
+        res.redirect('/Owner Dashboard.html');
+    } catch (err) { 
+        res.status(500).send(`Court update failed: ${err.message}`); 
+    }
+});
+
+
+app.post('/api/save-court', async (req, res) => {
+    try {
+        const { username, courtName } = req.body;
+        const user = await User.findOne({ username });
+        const court = await Court.findOne({ name: courtName });
+        if (!user || !court) return res.status(404).json({ error: "Not found" });
+
+        const index = user.savedCourts.indexOf(court._id);
+        if (index === -1) user.savedCourts.push(court._id);
+        else user.savedCourts.splice(index, 1);
+        
+        await user.save();
+        res.json({ ok: true, isSaved: index === -1 });
+    } catch (err) { res.status(500).json({ error: "Server error" }); }
+});
+
+// ----------------------------------------------------
+// DATA FETCHING 
+// ----------------------------------------------------
+app.get('/api/courts/all', async (req, res) => {
+    try {
+        const courts = await Court.find({});
+        res.json({ ok: true, courts });
+    } catch (err) { res.status(500).json({ ok: false }); }
+});
+
+app.get('/api/courts/:name', async (req, res) => {
+    try {
+        const court = await Court.findOne({ name: req.params.name });
+        if (!court) return res.status(404).json({ ok: false, error: "Court not found" });
+        res.json({ ok: true, court });
+    } catch (err) { res.status(500).json({ ok: false }); }
+});
+
+app.get('/api/user-profile-full/:username', async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.params.username }).populate('savedCourts');
+        if (!user) return res.status(404).json({ ok: false, error: "User not found" });
+
+        const bookings = await Reservation.find({ userId: user._id, status: 'active' }).populate('courtId').sort({ startTime: 1 });
+        
+        res.json({
+            ok: true, bio: user.bio || "", memberSince: user.createdAt,
+            stats: { total: bookings.length, favorites: user.savedCourts.length, upcoming: bookings.length },
+            bookings: bookings, favorites: user.savedCourts
+        });
+    } catch (err) { res.status(500).json({ ok: false }); }
+});
+
+// ----------------------------------------------------
+// RESERVATIONS & DASHBOARD
+// ----------------------------------------------------
+app.get('/availability', async (req, res) => {
+    try {
+        const { court, startDate, endDate } = req.query;
+        if (!court || !startDate || !endDate) return res.status(400).json({ ok: false });
+
+        const courtDoc = await Court.findOne({ name: court });
+        if (!courtDoc) return res.status(404).json({ ok: false });
+
+        const start = new Date(`${startDate}T00:00:00`);
+        const end = new Date(`${endDate}T23:59:59`);
+
+        const reservations = await Reservation.find({
+            courtId: courtDoc._id, startTime: { $gte: start, $lte: end }, status: { $in: ['active', 'pending'] }
+        });
+
+        const booked = [];
+        reservations.forEach(res => {
+            const dateStr = res.startTime.toISOString().split('T')[0];
+            const startHour = res.startTime.getHours();
+            const endHour = res.endTime.getHours(); 
+            for (let h = startHour; h < endHour; h++) booked.push(`${dateStr}|${String(h).padStart(2, '0')}:00`);
+        });
+        return res.status(200).json({ ok: true, booked });
+    } catch (error) { res.status(500).json({ ok: false }); }
+});
+
+app.post('/reserve', async (req, res) => {
+    try {
+        const { court, date, time, username } = req.body;
+        if (!court || !date || !time || !username) return res.status(400).json({ ok: false, error: "Missing fields." });
+        
+        const courtDoc = await Court.findOne({ name: court });
+        if (!courtDoc) return res.status(404).json({ ok: false, error: "Court not found." });
+        
+        const userDoc = await User.findOne({ username });
+        const startTime = parseDateTime(date, time);
+        
+        // CHANGED: duration is now 1 hour (1 * 60 * 60 * 1000 ms)
+        const endTime = new Date(startTime.getTime() + (1 * 60 * 60 * 1000)); 
+
+        // FIXED: Counts how many bookings already exist for this exact 1-hour block
+        const conflicting = await Reservation.countDocuments({ 
+            courtId: courtDoc._id, 
+            startTime: startTime, 
+            status: 'active' 
+        });
+
+        // FIXED: Only allows reservation if capacity (totalCourts) is not reached
+        if (conflicting >= (courtDoc.totalCourts || 1)) {
+            return res.status(409).json({ ok: false, error: "Capacity reached for this hour." });
+        }
+
+        const newRes = new Reservation({
+            courtId: courtDoc._id, 
+            userId: userDoc ? userDoc._id : null, 
+            bookedByName: userDoc ? userDoc.username : username, 
+            startTime: startTime, 
+            endTime: endTime, 
+            status: 'active' 
+        });
+        
+        await newRes.save();
+        return res.status(201).json({ ok: true });
+    } catch (error) { 
+        res.status(500).json({ ok: false, error: error.message }); 
+    }
+});
+
+app.get('/api/owner-reservations/:username', async (req, res) => {
+    try {
+        const owner = await User.findOne({ username: req.params.username });
+        if (!owner || !owner.courtId) return res.status(404).json({ ok: false });
+        
+        const reservations = await Reservation.find({ courtId: owner.courtId }).sort({ startTime: 1 });
+        res.json({ ok: true, reservations });
+    } catch (err) { res.status(500).json({ ok: false }); }
+});
+
+app.put('/api/reservations/:id/status', async (req, res) => {
+    try {
+        const { status } = req.body;
+        await Reservation.findByIdAndUpdate(req.params.id, { status });
+        res.json({ ok: true });
+    } catch (err) { res.status(500).json({ ok: false }); }
+});
+
+// ----------------------------------------------------
+// REVIEWS
+// ----------------------------------------------------
+app.get('/api/reviews/latest', async (req, res) => {
+    try {
+        const reviews = await Review.find({}).populate('courtId', 'name').populate('userId', 'username').sort({ _id: -1 }).limit(6);
+        res.json({ ok: true, reviews });
+    } catch (err) { res.status(500).json({ ok: false }); }
+});
+
+app.post('/api/reviews', async (req, res) => {
+    try {
+        const { courtKey, username, rating, comment } = req.body;
+        const court = await Court.findOne({ name: courtKey });
+        const user = await User.findOne({ username });
+        if(!court || !user) return res.status(404).json({ ok: false });
+
+        const newReview = new Review({ courtId: court._id, userId: user._id, rating, comment });
+        await newReview.save();
+        res.json({ ok: true });
+    } catch (err) { res.status(500).json({ ok: false }); }
+});
+
+app.get('/api/reviews/:courtName', async (req, res) => {
+    try {
+        const court = await Court.findOne({ name: req.params.courtName });
+        if(!court) return res.status(404).json({ ok: false });
+
+        const reviews = await Review.find({ courtId: court._id }).populate('userId', 'username').sort({ _id: -1 });
+        res.json({ ok: true, reviews });
+    } catch (err) { res.status(500).json({ ok: false }); }
+});
+
+app.listen(port, hostname, () => { console.log(`Server running at http://${hostname}:${port}/`); });

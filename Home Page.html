@@ -18,19 +18,13 @@
                 </a>
             </div>
 
-            <!-- NEW: hamburger pill (mobile) -->
-            <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="top-nav-menu">
-                &#8942;
-            </button>
+            <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="top-nav-menu">&#8942;</button>
 
             <div class="top-nav-right" id="top-nav-menu">
                 <a href="About Us.html">About Us</a>
                 <a id="nav-login" href="Login Page.html">Login</a>
                 <a id="nav-profile" class="btn btn-ghost" href="Profile Page.html" style="display:none;">Profile</a>
-
-                <!-- NEW: owner dashboard link -->
                 <a id="nav-owner" class="btn btn-ghost" href="Owner Dashboard.html" style="display:none;">Owner Dashboard</a>
-
                 <a id="nav-primary" class="btn btn-primary" href="Signup Page.html">Sign Up</a>
             </div>
         </div>
@@ -38,133 +32,24 @@
         <main class="page">
             <section class="home-hero">
                 <h1 class="home-title">Find picks faster with TerryPick.</h1>
-                <p class="home-subtitle">
-                    Sample homepage content: browse categories, view top picks, and save favorites.
-                </p>
+                <p class="home-subtitle">Browse actual courts fetched straight from our MongoDB Database.</p>
 
                 <div class="home-cta">
                     <a id="cta-signup" class="btn btn-primary" href="Signup Page.html">Get Started</a>
                     <a id="cta-login" class="btn btn-ghost" href="Login Page.html">I already have an account</a>
                     <a id="cta-owner" class="btn btn-ghost" href="Sign Up Page Owner.html">Register your court here</a>
-
-                    <!-- shown only when logged in -->
                     <a id="cta-profile" class="btn btn-primary" href="Profile Page.html" style="display:none;">Go to Profile</a>
                 </div>
             </section>
 
-            <section class="home-section">
-                <h2 class="home-section-title">Popular right now</h2>
-
-                <div class="card-grid">
-                    <article class="card">
-                        <h3 class="card-title">Top Picks</h3>
-                        <p class="card-text">See what's trending this week.</p>
-                        <a class="card-link" href="Court Profile Page.html">Explore</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Categories</h3>
-                        <p class="card-text">Browse by genre or type.</p>
-                        <a class="card-link" href="#">Browse</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Saved</h3>
-                        <p class="card-text">Keep your favorites in one place.</p>
-                        <a class="card-link" href="#">View saved</a>
-                    </article>
-                </div>
-            </section>
-
             <section id="featured-courts" class="home-section">
-                <h2 class="home-section-title">Featured courts (sample)</h2>
-
-                <div class="card-grid">
-                    <article class="card">
-                        <h3 class="card-title">Greenhills Court 2</h3>
-                        <p class="card-text">Outdoor · Hardcourt · 2 courts</p>
-                        <a class="card-link" href="Court Profile Page.html?court=greenhills2">View court</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">BGC Rooftop Pickle</h3>
-                        <p class="card-text">Outdoor · Acrylic · 1 court</p>
-                        <a class="card-link" href="Court Profile Page.html?court=bgc_rooftop">View court</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Makati Central Gym</h3>
-                        <p class="card-text">Indoor · Wooden · 3 courts</p>
-                        <a class="card-link" href="Court Profile Page.html?court=makati_gym">View court</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Quezon City Community Courts</h3>
-                        <p class="card-text">Outdoor · Concrete · 4 courts</p>
-                        <a class="card-link" href="Court Profile Page.html?court=qc_community">View court</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Alabang Sports Hub</h3>
-                        <p class="card-text">Indoor · Rubberized · 2 courts</p>
-                        <a class="card-link" href="Court Profile Page.html?court=alabang_hub">View court</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Pasig Riverside Courts</h3>
-                        <p class="card-text">Outdoor · Hardcourt · 2 courts</p>
-                        <a class="card-link" href="Court Profile Page.html?court=pasig_riverside">View court</a>
-                    </article>
-                </div>
-            </section>
-
-            <!-- random filler shit so I could try the scrolling thingymajig -->
-            <section class="home-section">
-                <h2 class="home-section-title">More recommendations</h2>
-
-                <div class="card-grid">
-                    <article class="card">
-                        <h3 class="card-title">Recommendation #1</h3>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <a class="card-link" href="#">Details</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Recommendation #2</h3>
-                        <p class="card-text">Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                        <a class="card-link" href="#">Details</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Recommendation #3</h3>
-                        <p class="card-text">Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-                        <a class="card-link" href="#">Details</a>
-                    </article>
-                </div>
+                <h2 class="home-section-title">All Courts (By Rating)</h2>
+                <div id="featured-courts-grid" class="card-grid"></div>
             </section>
 
             <section class="home-section">
-                <h2 class="home-section-title">Even more filler</h2>
-
-                <div class="card-grid">
-                    <article class="card">
-                        <h3 class="card-title">Item #4</h3>
-                        <p class="card-text">Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
-                        <a class="card-link" href="#">Details</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Item #5</h3>
-                        <p class="card-text">Cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat.</p>
-                        <a class="card-link" href="#">Details</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Item #6</h3>
-                        <p class="card-text">Cupidatat non proident, sunt in culpa qui officia deserunt.</p>
-                        <a class="card-link" href="#">Details</a>
-                    </article>
-                </div>
+                <h2 class="home-section-title">Latest Reviews</h2>
+                <div id="latest-reviews-grid" class="card-grid"></div>
             </section>
 
             <section id="owner-home" class="home-section" style="display:none;">
@@ -176,35 +61,24 @@
                         <p class="card-text">View your court profile and handle reservation requests.</p>
                         <a class="card-link" href="Owner Dashboard.html">Open dashboard</a>
                     </article>
-
                     <article class="card">
                         <h3 class="card-title">View your court page</h3>
                         <p class="card-text">This is what players see.</p>
-                        <a id="owner-court-link" class="card-link" href="Court Profile Page.html?court=greenhills2">View court</a>
+                        <a id="owner-court-link" class="card-link" href="#">View court</a>
                     </article>
                 </div>
             </section>
 
             <section class="home-section">
                 <h2 class="home-section-title">Footer-ish section</h2>
-
                 <div class="card">
                     <h3 class="card-title">About TerryPick</h3>
-
-                    <p class="card-text">
-                        TerryPick is a simple booking and discovery prototype for pickleball courts. You can browse sample court
-                        listings, check basic details/availability, and jump into a demo reservation flow.
-                    </p>
-
-                    <p class="card-text">
-                        Built as a course project to demonstrate UI pages, navigation, and simple “logged in” behavior (demo auth).
-                    </p>
-
+                    <p class="card-text">TerryPick is a simple booking and discovery prototype for pickleball courts. You can browse sample court listings, check basic details/availability, and jump into a demo reservation flow.</p>
+                    <p class="card-text">Built as a course project to demonstrate UI pages, navigation, and simple “logged in” behavior (demo auth).</p>
                     <a class="card-link" href="About Us.html">Read more →</a>
                 </div>
             </section>
         </main>
-
-        <script defer src="scripts.js"></script>
+        <script defer src="scriptsUpdated.js"></script>
     </body>
 </html>

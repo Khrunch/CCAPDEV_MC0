@@ -8,7 +8,6 @@
         <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/16117/16117721.png">
         <link rel="stylesheet" href="styles.css">
     </head>
-
     <body>
         <div class="top-nav">
             <div class="top-nav-left">
@@ -17,13 +16,7 @@
                     <span class="brand-text">TerryPick</span>                    
                 </a>
             </div>
-
-            <!-- NEW -->
-            <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="top-nav-menu">
-                &#8942;
-            </button>
-
-            <!-- CHANGED: add id -->
+            <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="top-nav-menu">&#8942;</button>
             <div class="top-nav-right" id="top-nav-menu">
                 <a href="About Us.html">About Us</a>
                 <a class="btn btn-ghost" href="Home Page.html">Home</a>
@@ -33,12 +26,13 @@
         <main class="page">
             <section class="profile-hero">
                 <div id="profile-avatar" class="profile-avatar" aria-hidden="true">TP</div>
-
                 <div class="profile-hero-text">
                     <h1 id="profile-name" class="profile-name">Profile</h1>
-                    <p class="profile-meta">Username: <strong id="profile-username">—</strong> · Member since <strong>2026</strong></p>
+                    <p class="profile-meta">Username: <strong id="profile-username">—</strong> · Member since <strong id="profile-member-since">2026</strong></p>
+                    
+                    <p id="profile-bio-text" class="card-text" style="margin-top: 10px; font-style: italic;"></p>
 
-                    <div class="profile-actions">
+                    <div class="profile-actions" style="margin-top: 20px;">
                         <a class="btn btn-primary" href="Edit User Profile Page.html">Edit profile</a>
                         <a class="btn btn-ghost" href="#" data-action="logout">Log out</a>
                     </div>
@@ -47,72 +41,33 @@
 
             <section class="home-section">
                 <h2 class="home-section-title">Your quick stats</h2>
-
                 <div class="profile-stats">
                     <article class="stat">
-                        <p class="stat-number">12</p>
-                        <p class="stat-label">Bookings</p>
+                        <p id="stat-total-bookings" class="stat-number">0</p>
+                        <p class="stat-label">Total Bookings</p>
                     </article>
                     <article class="stat">
-                        <p class="stat-number">5</p>
+                        <p id="stat-favorites" class="stat-number">0</p>
                         <p class="stat-label">Favorites</p>
                     </article>
                     <article class="stat">
-                        <p class="stat-number">2</p>
+                        <p id="stat-upcoming" class="stat-number">0</p>
                         <p class="stat-label">Upcoming</p>
                     </article>
                 </div>
             </section>
 
             <section class="home-section">
-                <h2 class="home-section-title">Upcoming bookings (sample)</h2>
-
-                <div class="card-grid">
-                    <article class="card">
-                        <h3 class="card-title">Greenhills Court 2</h3>
-                        <p class="card-text">Feb 20, 2026 · 6:00 PM - 7:00 PM</p>
-                        <a class="card-link" href="#">View details</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Makati Sports Club</h3>
-                        <p class="card-text">Mar 02, 2026 · 8:00 AM - 9:00 AM</p>
-                        <a class="card-link" href="#">View details</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">BGC Community Court</h3>
-                        <p class="card-text">Mar 10, 2026 · 5:00 PM - 6:00 PM</p>
-                        <a class="card-link" href="#">View details</a>
-                    </article>
-                </div>
+                <h2 class="home-section-title">Upcoming bookings</h2>
+                <div id="upcoming-bookings-grid" class="card-grid"></div>
             </section>
 
             <section class="home-section">
-                <h2 class="home-section-title">Saved courts (sample)</h2>
-
-                <div class="card-grid">
-                    <article class="card">
-                        <h3 class="card-title">Ortigas Pickle Hub</h3>
-                        <p class="card-text">Indoor · 4 courts · Parking available</p>
-                        <a class="card-link" href="#">Book now</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Alabang Open Courts</h3>
-                        <p class="card-text">Outdoor · 2 courts · Beginner friendly</p>
-                        <a class="card-link" href="#">Book now</a>
-                    </article>
-
-                    <article class="card">
-                        <h3 class="card-title">Katipunan Court</h3>
-                        <p class="card-text">Outdoor · 1 court · Near cafes</p>
-                        <a class="card-link" href="#">Book now</a>
-                    </article>
-                </div>
+                <h2 class="home-section-title">Saved courts</h2>
+                <div id="saved-courts-grid" class="card-grid"></div>
             </section>
         </main>
 
-        <script defer src="scripts.js"></script>
+        <script defer src="scriptsUpdated.js"></script>
     </body>
 </html>
