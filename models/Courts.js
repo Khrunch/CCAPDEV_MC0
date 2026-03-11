@@ -15,6 +15,7 @@ const courtSchema = new mongoose.Schema({
         weedend: {type: Number}
      },
     ownerId: {type:mongoose.Schema.Types.ObjectId, ref: 'User', required: true}, // Owner reference
+    averageRating: {type: Number, default: 0}, // Calculated from reviews
 });
 
 module.exports = mongoose.model('Court', courtSchema);
