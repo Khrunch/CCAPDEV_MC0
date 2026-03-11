@@ -7,9 +7,10 @@ const reservationSchema = new mongoose.Schema({
     startTime: { type: Date, required: true },
     endTime: { type: Date, required: true }, // Calculated as startTime + 2 hours 
     status: { type: String, enum: ['active', 'cancelled'], default: 'active' },
+    courtNumber: {type: Number},
 
     walkInPlayerName: String, // For walk-in reservations without user accounts
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now}
 });
 
 module.exports = mongoose.model('Reservation', reservationSchema);

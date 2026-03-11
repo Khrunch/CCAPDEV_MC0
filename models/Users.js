@@ -9,7 +9,10 @@ const userSchema = new mongoose.Schema({
 
     //if owner/employee, link to court; if player, can be null
     courtId: { type: mongoose.Schema.Types.ObjectId, ref: 'Court' }, 
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now },
+
+    //courts saved by the player
+    savedCourts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Court' }]
 });
 
 module.exports = mongoose.model('User', userSchema);

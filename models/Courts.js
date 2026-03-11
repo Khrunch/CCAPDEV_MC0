@@ -5,17 +5,17 @@ const courtSchema = new mongoose.Schema({
     name: {type: String, required: true, unique: true},
     location: {
         address: {type: String, required: true},
-        coordinates: { lat: Number, lng: Number}
-     }, //used for google maps integration
+        coordinates: { lat: Number, lng: Number} //used for google maps integration
+     },
     description: String,
     type: {type:String, enum: ['indoor', 'outdoor'], required: true},
     totalCourts: {type: Number, default: 1},
     rates: {
         weekday: {type: Number},
-        weedend: {type: Number}
+        weekend: {type: Number}
      },
     ownerId: {type:mongoose.Schema.Types.ObjectId, ref: 'User', required: true}, // Owner reference
-    averageRating: {type: Number, default: 0}, // Calculated from reviews
+    averageRating: {type: Number, default: 0} // Calculated from reviews
 });
 
 module.exports = mongoose.model('Court', courtSchema);
