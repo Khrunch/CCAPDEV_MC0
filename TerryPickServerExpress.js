@@ -252,6 +252,27 @@ app.put('/api/reservations/:id/status', async (req, res) => {
     } catch (err) { res.status(500).json({ ok: false }); }
 });
 
+// CHANGED: Cancel reservation - use PATCH instead of DELETE
+app.patch('/api/reservations/:id/cancel', async (req, res) => {
+    try {
+        const { username } = req.body;
+        if (!username) return res.status(400).json({ ok: false, error: "Username required." });
+
+        const reservation = await Reservation.findById(req.params.id);
+        if (!reservation) return res.status(404).json({ ok: false, error: "Reservation not found." });
+
+        // Verify the user owns this reservation
+        const user = await User.findOne({ username });
+        if (!user || String(reservation.userId) !== String(user._id)) {
+            return res.status(403).json({ ok: false, error: "Not authorized to cancel this reservation." });
+        }
+
+        reservation.status = 'cancelled';
+        await reservation.save();
+        res.json({ ok: true });
+    } catch (err) { res.status(500).json({ ok: false, error: err.message }); }
+});
+
 // ----------------------------------------------------
 // REVIEWS
 // ----------------------------------------------------

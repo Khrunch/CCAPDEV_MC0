@@ -169,7 +169,40 @@
                         data.bookings.forEach(b => {
                             const date = new Date(b.startTime).toLocaleDateString();
                             const time = new Date(b.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                            els.gridUp.innerHTML += `<article class="card"><h3 class="card-title">${b.courtId.name.replace(/_/g, ' ')}</h3><p class="card-text">${date} · ${time}</p><a class="card-link" href="Court Profile Page.html?court=${b.courtId.name}">View details</a></article>`;
+                            const card = document.createElement("article");
+                            card.className = "card";
+                            card.innerHTML = `
+                                <h3 class="card-title">${b.courtId.name.replace(/_/g, ' ')}</h3>
+                                <p class="card-text">${date} · ${time}</p>
+                                <a class="card-link" href="Court Profile Page.html?court=${b.courtId.name}">View details</a>
+                                <button class="btn btn-ghost cancel-reservation-btn" data-reservation-id="${b._id}" style="margin-top: 10px; color: #e74c3c; border-color: #e74c3c; cursor: pointer;">Cancel Reservation</button>
+                            `;
+                            els.gridUp.appendChild(card);
+                        });
+
+                        // Attach cancel event listeners
+                        els.gridUp.querySelectorAll(".cancel-reservation-btn").forEach(btn => {
+                            btn.addEventListener("click", async (e) => {
+                                const reservationId = e.target.dataset.reservationId;
+                                if (!confirm("Are you sure you want to cancel this reservation?")) return;
+
+                                try {
+                                    const resp = await fetch(`/api/reservations/${reservationId}/cancel`, {
+                                        method: "PATCH",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ username: getUsername() })
+                                    });
+                                    const result = await resp.json();
+                                    if (resp.ok && result.ok) {
+                                        alert("Reservation cancelled successfully.");
+                                        initProfileManagement();
+                                    } else {
+                                        alert(result.error || "Failed to cancel reservation.");
+                                    }
+                                } catch (err) {
+                                    alert("Error cancelling reservation: " + err.message);
+                                }
+                            });
                         });
                     }
                 }

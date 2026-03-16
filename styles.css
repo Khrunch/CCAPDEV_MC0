@@ -776,3 +776,19 @@ button[type="submit"] {
         }
     }
 }
+
+/* Cancel reservation button */
+.cancel-reservation-btn {
+    display: block;
+    width: 100%;
+    font-family: "Montserrat", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background-color 160ms ease, color 160ms ease;
+}
+
+.cancel-reservation-btn:hover {
+    background-color: #b1483d;
+    color: #fff;
+    border-color: #b1483d;
+}
