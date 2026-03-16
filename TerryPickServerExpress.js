@@ -21,6 +21,11 @@ app.use(express.static(__dirname));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//default page redirect
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "Home Page.html"));
+});
+
 function slugifyCourtKey(name) {
   return (String(name || "").trim().toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "").slice(0, 40) || "court");
 }
