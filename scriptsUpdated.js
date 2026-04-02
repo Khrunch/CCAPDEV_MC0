@@ -82,7 +82,7 @@
                     setLoggedIn(true);
                     setRole(data.role || "");
                     setOwnerCourt(data.ownerCourt || "");
-                    localStorage.setItem(USERNAME_KEY, data.username || ""); 
+                    localStorage.setItem(USERNAME_KEY, data.username || "");
                     updateAuthNav();
                     window.location.href = data.role === "owner" ? "Owner Dashboard.html" : "Profile Page.html";
                 } catch (err) { alert(err?.message || "Login failed."); }
@@ -98,7 +98,7 @@
                     setLoggedIn(true);
                     setRole(data.role || "");
                     setOwnerCourt(data.ownerCourt || "");
-                    localStorage.setItem(USERNAME_KEY, data.username || ""); 
+                    localStorage.setItem(USERNAME_KEY, data.username || "");
                     updateAuthNav();
                     window.location.href = data.role === "owner" ? "Owner Dashboard.html" : "Profile Page.html";
                 } catch (err) { alert(err?.message || "Signup failed."); }
@@ -106,14 +106,69 @@
         }
     }
 
-    document.addEventListener("click", (e) => {
-        const logoutEl = e.target.closest('[data-action="logout"]');
-        if (!logoutEl) return;
-        e.preventDefault();
-        setLoggedIn(false);
-        updateAuthNav();
-        window.location.href = "Home Page.html";
-    });
+    function wireMobileNav() {
+        const navs = document.querySelectorAll(".top-nav");
+        if (!navs.length) return;
+
+        navs.forEach((nav) => {
+            const toggleBtn = nav.querySelector(".nav-toggle");
+            const menu = nav.querySelector(".top-nav-right");
+            if (!toggleBtn || !menu) return;
+
+            toggleBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const isOpen = nav.classList.toggle("top-nav--menu-open");
+                toggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+            });
+
+            menu.addEventListener("click", (e) => {
+                e.stopPropagation();
+            });
+        });
+
+        document.addEventListener("click", () => {
+            navs.forEach((nav) => {
+                nav.classList.remove("top-nav--menu-open");
+                const toggleBtn = nav.querySelector(".nav-toggle");
+                if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
+            });
+        });
+
+        window.addEventListener("resize", () => {
+            if (window.innerWidth > 900) {
+                navs.forEach((nav) => {
+                    nav.classList.remove("top-nav--menu-open");
+                    const toggleBtn = nav.querySelector(".nav-toggle");
+                    if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
+                });
+            }
+        });
+    }
+
+    function wireLogoutButtons() {
+        const logoutButtons = document.querySelectorAll('[data-action="logout"]');
+        if (!logoutButtons.length) return;
+
+        logoutButtons.forEach((logoutEl) => {
+            logoutEl.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                setLoggedIn(false);
+                updateAuthNav();
+
+                const nav = logoutEl.closest(".top-nav");
+                if (nav) {
+                    nav.classList.remove("top-nav--menu-open");
+                    const toggleBtn = nav.querySelector(".nav-toggle");
+                    if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
+                }
+
+                window.location.href = "Home Page.html";
+            });
+        });
+    }
 
     // ==========================================
     // Profile Management 
@@ -546,6 +601,8 @@
     document.addEventListener("DOMContentLoaded", () => {
         updateAuthNav();
         wireAuthForms();
+        wireMobileNav();
+        wireLogoutButtons();
         initProfileManagement();
         initDynamicCourtPage();
         initEditCourtPage();
