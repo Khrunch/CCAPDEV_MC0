@@ -21,6 +21,20 @@
         }
     };
 
+    function initMap(lat, lng) {
+         const location = { lat: lat, lng: lng };
+
+         const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 15,
+            center: location
+        });
+
+        new google.maps.Marker({
+            position: location,
+            map: map
+        });
+    }
+
     function updateAuthNav() {
         const loginLink = document.getElementById("nav-login");
         const profileLink = document.getElementById("nav-profile");
@@ -536,6 +550,23 @@
                 document.getElementById("court-meta").innerHTML = `<strong>${court.type}</strong> · <strong>${court.totalCourts} courts</strong><br>${court.location.address}`;
                 document.getElementById("court-amenities").innerHTML = (court.amenities || []).map(x => `<p class="card-text">${x}</p>`).join("") || "Standard amenities";
                 document.getElementById("court-rules").innerHTML = (court.rules || []).map(x => `<p class="card-text">${x}</p>`).join("") || "Standard rules apply";
+
+                if (
+                    court.location &&
+                    court.location.coordinates &&
+                    court.location.coordinates.lat &&
+                    court.location.coordinates.lng
+                ) {
+                    initMap(
+                        court.location.coordinates.lat,
+                        court.location.coordinates.lng
+                    );
+                } else {
+                    console.log("No coordinates found for this court");
+                    
+                    // TEMPORARY COORDINATES : default to sanjuan
+                    initMap(14.6042, 121.0473);
+                }
             }
         } catch (err) { console.error("Court load error:", err); }
 

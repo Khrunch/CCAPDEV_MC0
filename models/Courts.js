@@ -4,7 +4,10 @@ const courtSchema = new mongoose.Schema({
     name: {type: String, required: true, unique: true},
     location: {
         address: {type: String, required: true},
-        coordinates: { lat: Number, lng: Number} 
+        coordinates: {
+        lat: {type: Number, required: true},
+        lng: {type: Number, required: true}
+        }
     },
     description: String,
     type: {type:String, enum: ['indoor', 'outdoor', 'Indoor', 'Outdoor'], required: true},
