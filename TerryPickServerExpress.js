@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 const User = require("./models/Users");
 const Court = require("./models/Courts");
@@ -52,7 +54,14 @@ app.post('/signup', async (req, res) => {
 
     if (password !== retype_password) return res.status(400).json({ ok: false, error: "Passwords do not match." });
 
-    const newUser = new User({ username: username.trim(), password: password, role: isOwnerSignup ? "owner" : "player" });
+    // HASH the password before saving
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const newUser = new User({ 
+        username: username.trim(), 
+        password: hashedPassword, // Store hashed version
+        role: isOwnerSignup ? "owner" : "player" 
+    });
     const savedUser = await newUser.save();
     
     let ownerCourtKey = "";
@@ -77,7 +86,12 @@ app.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username: username.trim() }).populate('courtId');
-    if (!user || user.password !== password) return res.status(401).json({ ok: false, error: "Invalid credentials." });
+    
+    // Use bcrypt.compare to check the plain-text input against the stored hash
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+        return res.status(401).json({ ok: false, error: "Invalid credentials." });
+    }
+
     const ownerCourt = user.courtId ? user.courtId.name : "";
     return res.status(200).json({ ok: true, username: user.username, role: user.role, ownerCourt });
   } catch (error) { res.status(500).json({ error: "Server error during login." }); }
@@ -90,7 +104,12 @@ app.post('/edit-profile', async (req, res) => {
     try {
         const { username, password, bio } = req.body;
         let updateData = { bio: bio || "" };
-        if (password && password.trim() !== "") updateData.password = password; 
+
+        // If a new password is provided, HASH it before updating
+        if (password && password.trim() !== "") {
+            updateData.password = await bcrypt.hash(password, saltRounds);
+        }
+
         await User.findOneAndUpdate({ username }, updateData);
         res.redirect('/Profile Page.html');
     } catch (err) { res.status(500).send("Update failed."); }
