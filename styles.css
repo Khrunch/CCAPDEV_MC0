@@ -792,3 +792,55 @@ button[type="submit"] {
     color: #fff;
     border-color: #b1483d;
 }
+
+/* Review form */
+
+.review-box {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    max-width: 500px;
+}
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.review-label {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.review-input {
+    width: 80px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.review-textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-family: inherit;
+    resize: none;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+.review-textarea:focus,
+.review-input:focus {
+    outline: none;
+    border-color: #7b5cff;
+    box-shadow: 0 0 0 2px rgba(123,92,255,0.2);
+}
+
+.review-btn {
+    align-self: flex-start;
+    margin-top: 5px;
+}

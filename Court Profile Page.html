@@ -64,12 +64,17 @@
             <section class="home-section" id="reviews-section">
                 <h2 class="home-section-title">Reviews</h2>
 
-                <div style="margin-bottom: 20px; max-width: 500px;">
-                    <form id="review-form">
-                        <label>Rating (1-5):</label>
-                        <input type="number" id="review-rating" min="1" max="5" required style="width: 50px; margin-bottom: 10px;">
-                        <textarea id="review-comment" placeholder="Leave a review..." required style="width: 100%; height: 80px; margin-bottom: 10px;"></textarea>
-                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                <div class="review-box">
+                    <form id="review-form" class="review-form">
+                        
+                        <label class="review-label">Rating (1–5)</label>
+                        <input type="number" id="review-rating" min="1" max="5" required class="review-input">
+
+                        <label class="review-label">Your Review</label>
+                        <textarea id="review-comment" placeholder="Share your experience..." required class="review-textarea"></textarea>
+
+                        <button type="submit" class="btn btn-primary review-btn">Submit Review</button>
+                    
                     </form>
                 </div>
 
